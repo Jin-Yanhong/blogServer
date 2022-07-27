@@ -6,7 +6,7 @@ const logger = require("morgan");
 const Mongoose = require("./config/mongoDB");
 
 // 应用路由
-const indexRouter = require("./routes/index");
+const homeRouter = require("./routes/home");
 
 const app = express();
 
@@ -21,14 +21,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // when it is visited ,use the flowing router
-app.use("/api", indexRouter);
+app.use("/api", homeRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next(createError(404));
 });
 
-// Mongoose.connect();
+Mongoose.connect();
 // error handler
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
