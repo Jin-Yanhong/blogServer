@@ -3,15 +3,16 @@ const axios = require('axios');
 const router = express.Router();
 
 const { getArticleList, queryArticleById } = require('../controller/article');
-const { getFootPrintList, createFootPrint } = require('../controller/footPrint');
+const { getFootPrintList } = require('../controller/footPrint');
 
 const { BingURL, wallpaperApi, Unsplash } = require('../config/links');
+
 // 开启跨域访问
 router.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
-	// res.header("Access-Control-Allow-Headers", "X-Requested-With");
 	res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
 	res.header('Content-Type', 'application/json;charset=utf-8');
+	// res.header("Access-Control-Allow-Headers", "X-Requested-With");
 	next();
 });
 
@@ -47,7 +48,6 @@ router.get('/unsplash', function (req, res, next) {
 	axios
 		.get(Unsplash)
 		.then(function (result) {
-			console.log('output', result);
 			let output = [];
 			let data = result.data;
 			for (let i = 0; i < data.length; i++) {
@@ -70,7 +70,11 @@ router.get('/unsplash', function (req, res, next) {
 			});
 		})
 		.catch(function (error) {
-			console.log('Get Unsplash Error:', error);
+			res.send({
+				code: 200,
+				msg: '获取 Unsplash 图像出错',
+				data: result,
+			});
 		});
 });
 
@@ -86,7 +90,6 @@ router.get('/getArticleList', function (req, res, next) {
 
 router.get('/getArticleContent', function (req, res, next) {
 	let id = req?.query?.id;
-
 	if (id) {
 		queryArticleById(id).then(result => {
 			res.send({
@@ -106,7 +109,6 @@ router.get('/getArticleContent', function (req, res, next) {
 
 router.get('/getFootPrintList', function (req, res, next) {
 	getFootPrintList().then(result => {
-		console.log(result);
 		res.send({
 			code: 200,
 			msg: 'success',

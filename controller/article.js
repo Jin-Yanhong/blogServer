@@ -5,14 +5,7 @@ function getArticleList() {
 }
 
 function createArticle(docs) {
-	return articleModel
-		.create(docs)
-		.then(res => {
-			console.log(res);
-		})
-		.catch(err => {
-			console.log('Create article failed', docs, err);
-		});
+	return articleModel.create(docs);
 }
 
 function deleteArticleById(id) {
@@ -20,9 +13,7 @@ function deleteArticleById(id) {
 }
 
 function updateArticle(doc) {
-	return articleModel.findOneAndUpdate({ _id: id }, doc, {}, function (...args) {
-		console.log('updateArticle', args);
-	});
+	return articleModel.findOneAndUpdate({ _id: id }, doc, {});
 }
 
 function queryArticleById(id) {

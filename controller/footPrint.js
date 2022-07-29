@@ -5,14 +5,7 @@ function getFootPrintList() {
 }
 
 function createFootPrint(docs) {
-	return footPrintModel
-		.create(docs)
-		.then(res => {
-			console.log(res);
-		})
-		.catch(err => {
-			console.log('Create article failed', docs, err);
-		});
+	return footPrintModel.create(docs);
 }
 
 module.exports = {
