@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const articleSchema = new mongoose.Schema({
 	title: String,
-	date: { type: Date, default: Date.now },
+	subTitle: String,
+	date: String,
 	author: {
 		type: String,
 		default: 'Mr.King',

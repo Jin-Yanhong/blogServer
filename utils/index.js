@@ -1,4 +1,14 @@
+// global router
+const express = require('express');
+const router = express.Router();
 const { errorType } = require('./consts.js');
+// 开启跨域访问
+const blogRouter = router.use(function (req, res, next) {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
+	res.header('Content-Type', 'application/json;charset=utf-8');
+	next();
+});
 
 /**
  *
@@ -26,7 +36,7 @@ function handleRequest(reqPromise, responseBody) {
 /**
  *
  * @param { string } key errorType
- * @param {*} responseBody responseBody
+ * @param { responseBody } responseBody responseBody
  */
 function handleRequestError(key, responseBody) {
 	switch (key) {
@@ -53,6 +63,7 @@ function handleRequestError(key, responseBody) {
 
 // 部分导出错误处理
 module.exports = {
+	blogRouter,
 	handleRequest,
 	handleRequestError,
 };

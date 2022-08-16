@@ -1,6 +1,6 @@
 ## Description
 
-This project is my personal blog server,mainly use `nodejs/express.js`, `MongoDB/mongoose`, heavily used `javascript`. features are very simple and only includes basic crud
+This project is my personal blog server,mainly use `express.js`, `MongoDB`, heavily used `javascript`.
 
 ## How to start
 
@@ -13,3 +13,33 @@ and then
 ```
 npm start
 ```
+
+## API DOC
+
+Here are links
+
+---
+
+`GET` bingWallpaper
+
+---
+
+`GET` getArticleList
+
+---
+
+`GET` getArticleContent
+
+---
+
+`GET` getFootPrintList
+
+---
+
+`GET` getUnsplashImg
+
+---
+
+`GET` getStatic
+
+---

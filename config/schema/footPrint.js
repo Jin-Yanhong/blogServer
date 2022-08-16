@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const footPrintSchema = new mongoose.Schema({
 	city: String,
 	lanLong: Array,
-	icon: String,
 	label: String,
 });
 

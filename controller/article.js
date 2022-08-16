@@ -1,7 +1,13 @@
 const articleModel = require('../config/schema/article');
 
-function getArticleList() {
-	return articleModel.find({}, { content: 0, __v: 0 }, { sort: { __v: 1 }, limit: 20 });
+/**
+ *
+ * @param { Number } pageSize pageSize
+ * @param { Number } pageNum pageNum
+ * @returns
+ */
+function getArticleList(pageSize, pageNum) {
+	return articleModel.find({}, { content: 0, __v: 0 }, { sort: { __v: 1 }, limit: pageSize, skip: pageSize * (pageNum - 1) });
 }
 
 function createArticle(docs) {
