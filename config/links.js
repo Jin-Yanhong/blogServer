@@ -2,7 +2,9 @@ const wallpaperApi = 'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=
 
 const BingURL = 'https://cn.bing.com';
 
-const Unsplash = 'https://unsplash.com/napi/topics/travel/photos?page=1&per_page=10';
+const Unsplash = function (pageNum, pageSize) {
+	return `https://unsplash.com/napi/topics/travel/photos?page=${pageNum}&per_page=${pageSize}`;
+};
 
 module.exports = {
 	BingURL,

@@ -25,7 +25,6 @@ router.get('/bingWallpaper', function (req, res, next) {
 			for (let i = 0; i < data.length; i++) {
 				output.push({
 					url: BingURL + data[i].url,
-					urlbase: data[i].copyright,
 					copyright: data[i].copyright,
 					title: data[i].title,
 				});
@@ -45,8 +44,10 @@ router.get('/bingWallpaper', function (req, res, next) {
 });
 
 router.get('/unsplash', function (req, res, next) {
+	let { pageNum, pageSize } = req.query;
+
 	axios
-		.get(Unsplash)
+		.get(Unsplash(pageNum, pageSize))
 		.then(function (result) {
 			let output = [];
 			let data = result.data;
@@ -73,7 +74,7 @@ router.get('/unsplash', function (req, res, next) {
 			res.send({
 				code: 200,
 				msg: '获取 Unsplash 图像出错',
-				data: result,
+				data: {},
 			});
 		});
 });
