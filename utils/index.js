@@ -18,7 +18,7 @@ const blogRouter = router.use(function (req, res, next) {
  */
 function handleRequest(reqPromise, responseBody, callback) {
 	reqPromise
-		.then(data => {
+		.then((data) => {
 			if (callback) {
 				callback(data);
 			} else {
@@ -29,7 +29,7 @@ function handleRequest(reqPromise, responseBody, callback) {
 				});
 			}
 		})
-		.catch(err => {
+		.catch((err) => {
 			responseBody.send({
 				msg: err.message,
 				code: 200,
@@ -73,48 +73,60 @@ const redisFunction = {
 	set: 'set',
 };
 
-function handleRedisFunction(caseKey, callback, { key, value }) {
+/**
+ *
+ * @param { string } caseKey redis方法名称  ping | get | incr | set
+ * @param { function } callback 成功回调
+ * @param { object } argsObject redis方法所需参数
+ */
+function handleRedisFunction(caseKey, callback, { key, value } = argsObject) {
 	switch (caseKey) {
 		case redisFunction.ping:
 			Redis.ping()
-				.then(result => {
+				.then((result) => {
 					callback(result);
 				})
-				.catch(err => {
+				.catch((err) => {
 					console.log(`${caseKey} error`, err);
 				});
 			break;
 		case redisFunction.get:
 			Redis.get(key)
-				.then(result => {
+				.then((result) => {
 					callback(result);
 				})
-				.catch(err => {
+				.catch((err) => {
 					console.log(`${caseKey} error`, err);
 				});
 			break;
 		case redisFunction.incr:
 			Redis.incr(key)
-				.then(result => {
+				.then((result) => {
 					callback(result);
 				})
-				.catch(err => {
+				.catch((err) => {
 					console.log(`${caseKey} error`, err);
 				});
 			break;
 		case redisFunction.set:
 			Redis.set(`${key}`, JSON.stringify(value))
-				.then(result => {
+				.then((result) => {
 					callback(result);
 				})
-				.catch(err => {
+				.catch((err) => {
 					console.log(`${caseKey} error`, err);
 				});
 			break;
 		default:
 			new Promise((resolve, reject) => {
 				resolve({});
-			});
+			})
+				.then((result) => {
+					callback(result);
+				})
+				.catch((err) => {
+					console.log(`${caseKey} error`, err);
+				});
 			break;
 	}
 }

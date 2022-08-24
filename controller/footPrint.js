@@ -8,7 +8,12 @@ function createFootPrint(docs) {
 	return footPrintModel.create(docs);
 }
 
+function deleteFootPrintById(id) {
+	return footPrintModel.findByIdAndDelete(id);
+}
+
 module.exports = {
 	getFootPrintList,
 	createFootPrint,
+	deleteFootPrintById,
 };

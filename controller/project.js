@@ -8,7 +8,11 @@ function createProject(docs) {
 	return projectModel.create(docs);
 }
 
+function deleteProjectById(id) {
+	return projectModel.findByIdAndDelete(id);
+}
 module.exports = {
 	getProjectList,
 	createProject,
+	deleteProjectById,
 };

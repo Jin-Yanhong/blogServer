@@ -11,8 +11,14 @@ function createSystemConfig(docs) {
 function updateSystemConfig(docs) {
 	return systemConfigModel.create(docs);
 }
+
+function deleteSystemConfigById(id) {
+	return systemConfigModel.findByIdAndDelete(id);
+}
+
 module.exports = {
 	getSystemConfigList,
 	createSystemConfig,
 	updateSystemConfig,
+	deleteSystemConfigById,
 };
