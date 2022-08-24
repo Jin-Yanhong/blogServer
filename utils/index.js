@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { errorType } = require('./consts.js');
+const Redis = require('../config/redis');
 // 开启跨域访问
 const blogRouter = router.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
@@ -15,14 +16,18 @@ const blogRouter = router.use(function (req, res, next) {
  * @param { Promise } reqPromise 请求任务
  * @param { Object } responseBody responseBody
  */
-function handleRequest(reqPromise, responseBody) {
+function handleRequest(reqPromise, responseBody, callback) {
 	reqPromise
 		.then(data => {
-			responseBody.send({
-				msg: 'success',
-				code: 200,
-				data: data,
-			});
+			if (callback) {
+				callback(data);
+			} else {
+				responseBody.send({
+					msg: 'success',
+					code: 200,
+					data: data,
+				});
+			}
 		})
 		.catch(err => {
 			responseBody.send({
@@ -61,9 +66,64 @@ function handleRequestError(key, responseBody) {
 	}
 }
 
+const redisFunction = {
+	ping: 'ping',
+	get: 'get',
+	incr: 'incr',
+	set: 'set',
+};
+
+function handleRedisFunction(caseKey, callback, { key, value }) {
+	switch (caseKey) {
+		case redisFunction.ping:
+			Redis.ping()
+				.then(result => {
+					callback(result);
+				})
+				.catch(err => {
+					console.log(`${caseKey} error`, err);
+				});
+			break;
+		case redisFunction.get:
+			Redis.get(key)
+				.then(result => {
+					callback(result);
+				})
+				.catch(err => {
+					console.log(`${caseKey} error`, err);
+				});
+			break;
+		case redisFunction.incr:
+			Redis.incr(key)
+				.then(result => {
+					callback(result);
+				})
+				.catch(err => {
+					console.log(`${caseKey} error`, err);
+				});
+			break;
+		case redisFunction.set:
+			Redis.set(`${key}`, JSON.stringify(value))
+				.then(result => {
+					callback(result);
+				})
+				.catch(err => {
+					console.log(`${caseKey} error`, err);
+				});
+			break;
+		default:
+			new Promise((resolve, reject) => {
+				resolve({});
+			});
+			break;
+	}
+}
+
 // 部分导出错误处理
 module.exports = {
 	blogRouter,
+	redisFunction,
+	handleRedisFunction,
 	handleRequest,
 	handleRequestError,
 };

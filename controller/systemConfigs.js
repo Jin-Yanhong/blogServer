@@ -1,7 +1,7 @@
-const systemConfigModel = require('../config/schema/systemConfig');
+const systemConfigModel = require('../config/schema/systemConfigs');
 
 function getSystemConfigList() {
-	return systemConfigModel.find({}, { __v: 0 }, { limit: 1 });
+	return systemConfigModel.findOne({}, { __v: 0 }, { limit: 1 });
 }
 
 function createSystemConfig(docs) {

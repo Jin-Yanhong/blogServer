@@ -3,6 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const Mongoose = require('./config/mongoDB');
+const Redis = require('./config/redis');
 
 // 应用路由
 const articleRouter = require('./routes/article');
@@ -39,6 +40,15 @@ app.use(function (req, res, next) {
 });
 
 Mongoose.connect();
+
+Redis.connect()
+	.then(res => {
+		console.log('Redis connection succeeded', res);
+	})
+	.catch(err => {
+		console.log('Redis connection failed', err);
+	});
+
 // error handler
 app.use(function (err, req, res, next) {
 	res.status(err.status || 500).send({
