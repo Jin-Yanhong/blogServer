@@ -1,6 +1,6 @@
 const Redis_Host = '127.0.0.1';
 const Redis_Port = 6379;
-const MongodB = 'mongodb://localhost:27017/blog';
+const MongodBLink = 'mongodb://localhost:27017/blog';
 const sysConfig = {
 	copyright: '©jin-yanhong  All Right Reserved 2022',
 	contactInfo: {
@@ -12,6 +12,6 @@ const sysConfig = {
 module.exports = {
 	Redis_Host,
 	Redis_Port,
-	MongodB,
+	MongodBLink,
 	sysConfig,
 };
