@@ -1,6 +1,10 @@
 const { errorType } = require('../utils/consts');
 const { getArticleList, queryArticleById } = require('../controller/article');
-const { blogRouter, handleRequest, handleRequestError } = require('../utils/index');
+const {
+	blogRouter,
+	handleRequest,
+	handleRequestError,
+} = require('../utils/index');
 
 // 获取文章列表
 blogRouter.get('/getArticleList', function (req, res) {
@@ -13,7 +17,7 @@ blogRouter.get('/getArticleList', function (req, res) {
 });
 
 // 根据文章 id 查询文章详情
-blogRouter.get('/getArticleContent', function (req, res) {
+blogRouter.get('/getArticleContentById', function (req, res) {
 	let id = req?.query?.id;
 	if (id) {
 		handleRequest(queryArticleById(id), res);

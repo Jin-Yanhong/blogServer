@@ -4,7 +4,7 @@ const projectSchema = new mongoose.Schema({
 	name: String,
 	desc: String,
 	tag: Array,
-	industry: String,
+	technology: Array,
 	screenShortUrl: String,
 });
 
