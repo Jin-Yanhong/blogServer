@@ -6,7 +6,7 @@ const Redis = require('../config/redis');
 // 开启跨域访问
 const blogRouter = router.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Credentials', 'true');
-	res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5000');
+	res.header('Access-Control-Allow-Origin', 'http://localhost:5000');
 	res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
 	res.header('Content-Type', 'application/json;charset=utf-8');
 	next();

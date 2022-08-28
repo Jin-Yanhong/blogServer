@@ -13,11 +13,7 @@ blogRouter.get('/bingWallpaper', function (req, res) {
 		let output = [];
 		let data = result.data.images;
 		for (let i = 0; i < data.length; i++) {
-			output.push({
-				url: BingURL + data[i].url,
-				copyright: data[i].copyright,
-				title: data[i].title,
-			});
+			output.push(BingURL + data[i].url);
 		}
 		return output;
 	});
@@ -50,6 +46,75 @@ blogRouter.get('/unsplash', function (req, res) {
 	} else {
 		handleRequestError(errorType.params_in, res);
 	}
+});
+
+blogRouter.get('/getOuterLinks', function (req, res) {
+	res.send({
+		message: 'success',
+		code: 200,
+		data: [
+			[
+				{
+					link: '#',
+					name: '友情链接',
+				},
+				{
+					link: 'https://unsplash.com/',
+					name: 'Unsplash',
+				},
+				{
+					link: 'https://flatuicolors.com/',
+					name: 'Flatuicolors',
+				},
+				{
+					link: 'https://burst.shopify.com/',
+					name: 'Shopify',
+				},
+				{
+					link: 'https://cn.bing.com/',
+					name: 'Bing',
+				},
+				{
+					link: 'https://unsplash.com/',
+					name: 'Unsplash',
+				},
+				{
+					link: 'https://flatuicolors.com/',
+					name: 'Flatuicolors',
+				},
+				{
+					link: 'https://burst.shopify.com/',
+					name: 'Shopify',
+				},
+				{
+					link: 'https://cn.bing.com/',
+					name: 'Bing',
+				},
+			],
+			[
+				{
+					link: '#',
+					name: '工具链接',
+				},
+				{
+					link: 'https://unsplash.com/',
+					name: 'Unsplash',
+				},
+				{
+					link: 'https://flatuicolors.com/',
+					name: 'Flatuicolors',
+				},
+				{
+					link: 'https://burst.shopify.com/',
+					name: 'Shopify',
+				},
+				{
+					link: 'https://cn.bing.com/',
+					name: 'Bing',
+				},
+			],
+		],
+	});
 });
 
 module.exports = blogRouter;
