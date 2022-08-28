@@ -3,11 +3,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const Mongoose = require('./config/mongoDB');
-const Redis = require('./config/redis');
-const { handleRedisFunction, redisFunction } = require('./utils/index');
-const { sysConfig } = require('./config/appConfig');
+// const Redis = require('./config/redis');
 
-// 应用路由
+// App routers
 const articleRouter = require('./routes/article');
 const footPrintRouter = require('./routes/footPrint');
 const homeRouter = require('./routes/home');
@@ -43,20 +41,20 @@ app.use(function (req, res, next) {
 	});
 });
 
+// Handle MongoDB Service Connection
 Mongoose.connect();
 
+// Handle Redis Service Connection
+
+/* 
 Redis.connect()
 	.then(() => {
 		console.log('Redis connection succeeded');
-		handleRedisFunction(
-			redisFunction.set,
-			(result) => console.log('system config initialized successfully'),
-			{ key: 'sysConfig', value: sysConfig }
-		);
 	})
 	.catch((err) => {
 		console.log('Redis connection failed', err);
 	});
+*/
 
 // error handler
 app.use(function (err, req, res, next) {
