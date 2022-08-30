@@ -14,7 +14,7 @@ const {
  * @apiQuery {Number} pageNum pageNum
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }
@@ -37,7 +37,7 @@ blogRouter.get('/getArticleList', function (req, res) {
  * @apiParam {String} id Article unique ID
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }

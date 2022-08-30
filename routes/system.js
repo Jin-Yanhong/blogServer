@@ -18,7 +18,7 @@ const saveFileToDataBase = require('../middleware/saveFileToDataBase');
  * @apiGroup System
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }
@@ -26,14 +26,14 @@ const saveFileToDataBase = require('../middleware/saveFileToDataBase');
 // 获取系统配置
 blogRouter.get('/getSystemConfig', function (req, res) {
 	handleRequest(getSystemConfigList(), res, function (result) {
-		let { copyright, contactInfo, _id: id } = result;
+		let { copyright, contactInfo, lanLong } = result;
 		res.send({
 			msg: 'success',
 			code: 200,
 			data: {
-				id,
 				copyright,
 				contactInfo,
+				lanLong,
 			},
 		});
 	});
@@ -46,7 +46,7 @@ blogRouter.get('/getSystemConfig', function (req, res) {
  * @apiBody {file} file The file you want to upload
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }
@@ -79,7 +79,7 @@ blogRouter.post(
  * @apiBody {file} file The file you want to upload
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }

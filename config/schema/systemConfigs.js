@@ -7,6 +7,7 @@ const systemConfigSchema = new mongoose.Schema({
 		phone: String,
 		email: String,
 	},
+	lanLong: Array,
 });
 
 const systemConfigModel = mongoose.model('system_configs', systemConfigSchema);

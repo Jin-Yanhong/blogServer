@@ -1,33 +1,29 @@
 /*******************************************************************************************/
 // 文章数据
+db.createCollection('articles');
 
 let date = new Date();
 let dateStr = `${date.getFullYear()} / ${
 	date.getMonth() + 1
 } / ${date.getDate()}`;
 
-db.createCollection('articles');
+db.getCollection('articles').insertOne({
+	title: 'Here is the title of article 1',
+	subTitle: 'Here is the subTitle of article 1',
+	date: dateStr,
+	author: 'Mr.King',
+	summary: 'Here is the summary of article 1',
+	content: 'Here is the content of article 1',
+});
 
-let article = [
-	{
-		title: 'Here is the title of article 1',
-		subTitle: 'Here is the subTitle of article 1',
-		date: dateStr,
-		author: 'Mr.King',
-		summary: 'Here is the summary of article 1',
-		content: 'Here is the content of article 1',
-	},
-	{
-		title: 'Here is the title of article 2',
-		subTitle: 'Here is the subTitle of article 2',
-		date: dateStr,
-		author: 'Mr.King',
-		summary: 'Here is the summary of article 2',
-		content: 'Here is the content of article 2',
-	},
-];
-
-db.getCollection('articles').insertMany([article]);
+db.getCollection('articles').insertOne({
+	title: 'Here is the title of article 2',
+	subTitle: 'Here is the subTitle of article 2',
+	date: dateStr,
+	author: 'Mr.King',
+	summary: 'Here is the summary of article 2',
+	content: 'Here is the content of article 2',
+});
 
 /*******************************************************************************************/
 // 足迹数据
@@ -103,16 +99,18 @@ db.getCollection('skills').insertMany([
 
 /*******************************************************************************************/
 // 系统配置数据
+db.getCollection('system_configs').drop();
 
 db.createCollection('system_configs');
 
 db.getCollection('system_configs').insertOne({
-	copyright: '©jin-yanhong  All Right Reserved 2022',
+	copyright: '© jin-yanhong  All Right Reserved 2022',
 	contactInfo: {
-		address: '甘肃省兰州市城关区',
+		address: '甘肃省兰州市城关区南关什字亚欧国际3310室',
 		phone: '15593174360',
 		email: 'jin-yanhong@foxmail.com',
 	},
+	lanLong: [103.827317, 36.0539],
 });
 
 /*******************************************************************************************/

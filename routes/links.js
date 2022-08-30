@@ -14,7 +14,7 @@ const {
  *
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }
@@ -41,7 +41,7 @@ blogRouter.get('/bingWallpaper', function (req, res) {
  * @apiQuery {Number} pageNum pageNum
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }
@@ -80,7 +80,7 @@ blogRouter.get('/unsplash', function (req, res) {
  *
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }
@@ -88,14 +88,10 @@ blogRouter.get('/unsplash', function (req, res) {
 //页尾链接
 blogRouter.get('/getOuterLinks', function (req, res) {
 	res.send({
-		message: 'success',
+		msg: 'success',
 		code: 200,
-		data: [
-			[
-				{
-					link: '#',
-					name: '友情链接',
-				},
+		data: {
+			thanks: [
 				{
 					link: 'https://unsplash.com/',
 					name: 'Unsplash',
@@ -129,11 +125,7 @@ blogRouter.get('/getOuterLinks', function (req, res) {
 					name: 'Bing',
 				},
 			],
-			[
-				{
-					link: '#',
-					name: '工具链接',
-				},
+			tools: [
 				{
 					link: 'https://unsplash.com/',
 					name: 'Unsplash',
@@ -151,7 +143,7 @@ blogRouter.get('/getOuterLinks', function (req, res) {
 					name: 'Bing',
 				},
 			],
-		],
+		},
 	});
 });
 

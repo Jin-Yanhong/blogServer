@@ -14,7 +14,7 @@ const {
  * @apiQuery {Number} pageNum pageNum
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }
@@ -35,7 +35,7 @@ blogRouter.get('/getProjectList', function (req, res) {
  * @apiParam {String} id Project unique ID
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }
@@ -43,7 +43,7 @@ blogRouter.get('/getProjectList', function (req, res) {
 
 // 获取项目详情
 blogRouter.get('/getProjectDetail/:id', function (req, res) {
-	let id = req?.query?.id;
+	let id = req?.params?.id;
 	if (id) {
 		handleRequest(queryProjectById(id), res);
 	} else {

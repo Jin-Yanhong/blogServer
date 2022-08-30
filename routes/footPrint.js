@@ -13,7 +13,7 @@ const {
  *
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }

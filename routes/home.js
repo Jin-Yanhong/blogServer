@@ -8,7 +8,7 @@ const { getSkillsList } = require('../controller/skills');
  * @apiGroup Home
  * @apiSuccessExample Success-Response:
  *     {
- *       "message": "success",
+ *       "msg": "success",
  *       "data": "{...}"
  *       "code": 200
  *     }

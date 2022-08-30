@@ -8,6 +8,7 @@ const sysConfig = {
 		phone: '15593174360',
 		email: 'jin-yanhong@foxmail.com',
 	},
+	lanLong: [103.827317, 36.0539],
 };
 module.exports = {
 	Redis_Host,
