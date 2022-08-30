@@ -1,27 +1,18 @@
 const { blogRouter, handleRequest } = require('../utils/index');
 
-const {
-	getSystemConfigList,
-	createSystemConfig,
-} = require('../controller/systemConfigs');
-
 const { getSkillsList } = require('../controller/skills');
 
-// 获取系统配置
-blogRouter.get('/getSystemConfig', function (req, res) {
-	handleRequest(getSystemConfigList(), res, function (result) {
-		let { copyright, contactInfo, _id: id } = result;
-		res.send({
-			msg: 'success',
-			code: 200,
-			data: {
-				id,
-				copyright,
-				contactInfo,
-			},
-		});
-	});
-});
+/**
+ * @api {get} /home/getSkillsList getSkillsList
+ * @apiName getSkillsList
+ * @apiGroup Home
+ * @apiSuccessExample Success-Response:
+ *     {
+ *       "message": "success",
+ *       "data": "{...}"
+ *       "code": 200
+ *     }
+ */
 
 // 获取工作技能
 blogRouter.get('/getSkillsList', function (req, res) {

@@ -7,6 +7,18 @@ const {
 	handleRequestError,
 } = require('../utils/index');
 
+/**
+ * @api {get} /links/bingWallpaper bingWallpaper
+ * @apiName bingWallpaper
+ * @apiGroup Links
+ *
+ * @apiSuccessExample Success-Response:
+ *     {
+ *       "message": "success",
+ *       "data": "{...}"
+ *       "code": 200
+ *     }
+ */
 // 必应壁纸
 blogRouter.get('/bingWallpaper', function (req, res) {
 	let request = axios.get(wallpaperApi).then(function (result) {
@@ -21,6 +33,19 @@ blogRouter.get('/bingWallpaper', function (req, res) {
 	handleRequest(request, res);
 });
 
+/**
+ * @api {get} /links/unsplash?pageSize=10&pageNum=1  unsplash
+ * @apiName unsplash
+ * @apiGroup Links
+ * @apiQuery {Number} pageSize pageSize
+ * @apiQuery {Number} pageNum pageNum
+ * @apiSuccessExample Success-Response:
+ *     {
+ *       "message": "success",
+ *       "data": "{...}"
+ *       "code": 200
+ *     }
+ */
 // unsplash 壁纸
 blogRouter.get('/unsplash', function (req, res) {
 	let { pageSize, pageNum } = req.query;
@@ -48,6 +73,19 @@ blogRouter.get('/unsplash', function (req, res) {
 	}
 });
 
+/**
+ * @api {get} /links/getOuterLinks getOuterLinks
+ * @apiName getOuterLinks
+ * @apiGroup Links
+ *
+ * @apiSuccessExample Success-Response:
+ *     {
+ *       "message": "success",
+ *       "data": "{...}"
+ *       "code": 200
+ *     }
+ */
+//页尾链接
 blogRouter.get('/getOuterLinks', function (req, res) {
 	res.send({
 		message: 'success',

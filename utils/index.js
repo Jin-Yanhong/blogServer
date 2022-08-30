@@ -1,10 +1,10 @@
 // global router
 const express = require('express');
-const router = express.Router();
+const Router = express.Router();
 const { errorType } = require('./consts.js');
 const Redis = require('../config/redis');
 // 开启跨域访问
-const blogRouter = router.use(function (req, res, next) {
+const blogRouter = Router.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Credentials', 'true');
 	res.header('Access-Control-Allow-Origin', 'http://localhost:5000');
 	res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
