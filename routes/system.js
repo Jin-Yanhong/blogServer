@@ -12,6 +12,12 @@ const {
 const saveFileToDisk = require('../middleware/saveFileToDisk');
 const saveFileToDataBase = require('../middleware/saveFileToDataBase');
 
+// const { MongoDBServer } = require('../config/appConfig');
+// const URL = `mongodb://${MongoDBServer.host}:${MongoDBServer.port}/${MongoDBServer.db}`;
+// const mongoose = require('mongoose');
+// mongoose.createConnection(URL);
+// const db = mongoose.connection;
+
 /**
  * @api {get} /system/getSystemConfig getSystemConfig
  * @apiName getSystemConfig
@@ -94,8 +100,9 @@ blogRouter.post(
 		res.send({
 			msg: 'success',
 			code: 200,
-			data: file,
+			data: { file },
 		});
 	}
 );
+
 module.exports = blogRouter;

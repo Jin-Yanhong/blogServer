@@ -1,4 +1,4 @@
-const projectModel = require('../config/schema/project');
+const projectModel = require('./schema/project');
 
 /**
  *

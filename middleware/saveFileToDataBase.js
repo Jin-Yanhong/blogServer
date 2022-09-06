@@ -1,19 +1,20 @@
 // receive file to `diskStorage`
-const { MongodBLink } = require('../config/appConfig');
+const { MongoDBServer } = require('../config/appConfig');
+const { GridFsStorage } = require('multer-gridfs-storage');
 const multer = require('multer');
 const mongoose = require('mongoose');
 
-const { GridFsStorage } = require('multer-gridfs-storage');
+const URL = `mongodb://${MongoDBServer.host}:${MongoDBServer.port}/${MongoDBServer.db}`;
+const db = mongoose.connection;
 
 // Create a storage object with a given configuration
 const storage = new GridFsStorage({
-	url: MongodBLink,
-	db: mongoose.connect(MongodBLink),
+	url: URL,
+	db: db,
 	file: (req, file) => {
-		console.log({ file });
 		let fileStoreObj = {
 			// Key:"",
-			filename: 'file_' + Date.now() + file.originalname,
+			filename: Date.now() + '_' + file.originalname,
 			// metadata:"",
 			id: file.fieldname + '_' + Date.now(),
 			bucketName: '',

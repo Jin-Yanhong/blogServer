@@ -1,4 +1,4 @@
-const footPrintModel = require('../config/schema/footPrint');
+const footPrintModel = require('./schema/footPrint');
 
 function getFootPrintList() {
 	return footPrintModel.find({}, { __v: 0 }, { limit: 20 });

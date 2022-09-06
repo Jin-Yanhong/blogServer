@@ -12,6 +12,7 @@ const homeRouter = require('./routes/home');
 const linksRouter = require('./routes/links');
 const projectRouter = require('./routes/project');
 const systemRouter = require('./routes/system');
+const userRouter = require('./routes/user');
 
 const app = express();
 // view engine setup
@@ -31,6 +32,7 @@ app.use('/api/home', homeRouter);
 app.use('/api/links', linksRouter);
 app.use('/api/project', projectRouter);
 app.use('/api/system', systemRouter);
+app.use('/api/users', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -43,7 +45,6 @@ app.use(function (req, res, next) {
 
 // Handle MongoDB Service Connection
 Mongoose.connect();
-
 // Handle Redis Service Connection
 
 /* 

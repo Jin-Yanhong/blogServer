@@ -1,11 +1,14 @@
 const axios = require('axios');
 const { errorType } = require('../utils/consts');
-const { BingURL, wallpaperApi, Unsplash } = require('../config/links');
+
 const {
 	blogRouter,
 	handleRequest,
 	handleRequestError,
 } = require('../utils/index');
+
+const bingApi =
+	'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=10&nc=1612409408851&pid=hp&FORM=BEHPTB&uhd=1&uhdwidth=3840&uhdheight=2160';
 
 /**
  * @api {get} /links/bingWallpaper bingWallpaper
@@ -21,56 +24,16 @@ const {
  */
 // 必应壁纸
 blogRouter.get('/bingWallpaper', function (req, res) {
-	let request = axios.get(wallpaperApi).then(function (result) {
+	let request = axios.get(bingApi).then(function (result) {
 		let output = [];
 		let data = result.data.images;
 		for (let i = 0; i < data.length; i++) {
-			output.push(BingURL + data[i].url);
+			output.push('https://cn.bing.com' + data[i].url);
 		}
 		return output;
 	});
 
 	handleRequest(request, res);
-});
-
-/**
- * @api {get} /links/unsplash?pageSize=10&pageNum=1  unsplash
- * @apiName unsplash
- * @apiGroup Links
- * @apiQuery {Number} pageSize pageSize
- * @apiQuery {Number} pageNum pageNum
- * @apiSuccessExample Success-Response:
- *     {
- *       "msg": "success",
- *       "data": "{...}"
- *       "code": 200
- *     }
- */
-// unsplash 壁纸
-blogRouter.get('/unsplash', function (req, res) {
-	let { pageSize, pageNum } = req.query;
-	if (pageSize && pageNum) {
-		let request = axios
-			.get(Unsplash(pageNum, pageSize))
-			.then(function (result) {
-				let output = [];
-				let data = result.data;
-				for (let i = 0; i < data.length; i++) {
-					output.push({
-						raw: data[i].urls.raw,
-						full: data[i].urls.full,
-						regular: data[i].urls.regular,
-						small: data[i].urls.small,
-						thumb: data[i].urls.thumb,
-						small_s3: data[i].urls.small_s3,
-					});
-				}
-				return output;
-			});
-		handleRequest(request, res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
 });
 
 /**

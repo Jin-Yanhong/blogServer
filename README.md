@@ -40,4 +40,4 @@ and then
 apidoc -i routes -o ./public/api
 ```
 
-and visit [http://localhost:3000/apidoc/](http://localhost:3000/apidoc/) in your browser
+and visit [http://localhost:3000/api/](http://localhost:3000/apidoc/) in your browser

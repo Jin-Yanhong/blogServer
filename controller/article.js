@@ -1,4 +1,4 @@
-const articleModel = require('../config/schema/article');
+const articleModel = require('./schema/article');
 
 /**
  *

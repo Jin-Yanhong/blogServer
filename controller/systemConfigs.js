@@ -1,4 +1,4 @@
-const systemConfigModel = require('../config/schema/systemConfigs');
+const systemConfigModel = require('./schema/systemConfigs');
 
 function getSystemConfigList() {
 	return systemConfigModel.findOne({}, { __v: 0 }, { limit: 1 });

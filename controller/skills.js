@@ -1,4 +1,4 @@
-const skillModel = require('../config/schema/skills');
+const skillModel = require('./schema/skills');
 
 function getSkillsList() {
 	return skillModel.find(
