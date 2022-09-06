@@ -8,7 +8,7 @@ const articleSchema = new mongoose.Schema({
 		type: String,
 		default: 'Mr.King',
 	},
-	summary: String,
+	index: Number,
 	content: String,
 });
 

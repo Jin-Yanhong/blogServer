@@ -1,32 +1,31 @@
 /*******************************************************************************************/
 // 文章数据
+db.getCollection('articles').drop();
+
 db.createCollection('articles');
 
-let date = new Date();
-let dateStr = `${date.getFullYear()} / ${
-	date.getMonth() + 1
-} / ${date.getDate()}`;
-
-db.getCollection('articles').insertOne({
-	title: 'Here is the title of article 1',
-	subTitle: 'Here is the subTitle of article 1',
-	date: dateStr,
-	author: 'Mr.King',
-	summary: 'Here is the summary of article 1',
-	content: 'Here is the content of article 1',
-});
-
-db.getCollection('articles').insertOne({
-	title: 'Here is the title of article 2',
-	subTitle: 'Here is the subTitle of article 2',
-	date: dateStr,
-	author: 'Mr.King',
-	summary: 'Here is the summary of article 2',
-	content: 'Here is the content of article 2',
-});
+db.getCollection('articles').insertMany([
+	{
+		title: '我对前端工作的理解',
+		subTitle: 'Here is the subTitle of article 1',
+		date: '2022 / 9 / 6',
+		author: 'Mr.King',
+		index: 1,
+		content: 'Here is the content of article 1',
+	},
+	{
+		title: '我对前端现状的认识',
+		subTitle: 'Here is the subTitle of article 2',
+		date: '2022 / 9 / 6',
+		author: 'Mr.King',
+		index: 2,
+		content: 'Here is the content of article 2',
+	},
+]);
 
 /*******************************************************************************************/
 // 足迹数据
+db.getCollection('foot_prints').drop();
 
 db.createCollection('foot_prints');
 
@@ -46,6 +45,7 @@ db.getCollection('foot_prints').insertMany([
 
 /*******************************************************************************************/
 // 项目数据
+db.getCollection('projects').drop();
 
 db.createCollection('projects');
 
@@ -75,6 +75,7 @@ db.getCollection('projects').insertMany([
 
 /*******************************************************************************************/
 // 个人技能数据
+db.getCollection('skills').drop();
 
 db.createCollection('skills');
 
@@ -104,7 +105,7 @@ db.getCollection('system_configs').drop();
 db.createCollection('system_configs');
 
 db.getCollection('system_configs').insertOne({
-	copyright: '© jin-yanhong  All Right Reserved 2022',
+	copyright: '© jin-yanhong All Right Reserved 2022',
 	contactInfo: {
 		address: '甘肃省兰州市城关区南关什字亚欧国际3310室',
 		phone: '15593174360',

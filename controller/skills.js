@@ -1,7 +1,16 @@
 const skillModel = require('../config/schema/skills');
 
 function getSkillsList() {
-	return skillModel.find({}, { __v: 0 }, { limit: 30 });
+	return skillModel.find(
+		{},
+		{ __v: 0 },
+		{
+			limit: 30,
+			sort: {
+				index: 1,
+			},
+		}
+	);
 }
 
 function createSkill(docs) {

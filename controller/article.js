@@ -10,7 +10,13 @@ function getArticleList(pageSize, pageNum) {
 	return articleModel.find(
 		{},
 		{ content: 0, __v: 0 },
-		{ sort: { __v: 1 }, limit: pageSize, skip: pageSize * (pageNum - 1) }
+		{
+			sort: {
+				index: 1,
+			},
+			limit: pageSize,
+			skip: pageSize * (pageNum - 1),
+		}
 	);
 }
 
