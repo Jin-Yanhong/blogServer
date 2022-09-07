@@ -10,18 +10,6 @@ const {
 const bingApi =
 	'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=10&nc=1612409408851&pid=hp&FORM=BEHPTB&uhd=1&uhdwidth=3840&uhdheight=2160';
 
-/**
- * @api {get} /links/bingWallpaper bingWallpaper
- * @apiName bingWallpaper
- * @apiGroup Links
- *
- * @apiSuccessExample Success-Response:
- *     {
- *       "msg": "success",
- *       "data": "{...}"
- *       "code": 200
- *     }
- */
 // 必应壁纸
 blogRouter.get('/bingWallpaper', function (req, res) {
 	let request = axios.get(bingApi).then(function (result) {
@@ -36,18 +24,6 @@ blogRouter.get('/bingWallpaper', function (req, res) {
 	handleRequest(request, res);
 });
 
-/**
- * @api {get} /links/getOuterLinks getOuterLinks
- * @apiName getOuterLinks
- * @apiGroup Links
- *
- * @apiSuccessExample Success-Response:
- *     {
- *       "msg": "success",
- *       "data": "{...}"
- *       "code": 200
- *     }
- */
 //页尾链接
 blogRouter.get('/getOuterLinks', function (req, res) {
 	res.send({

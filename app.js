@@ -13,6 +13,7 @@ const linksRouter = require('./routes/links');
 const projectRouter = require('./routes/project');
 const systemRouter = require('./routes/system');
 const userRouter = require('./routes/user');
+const filesRouter = require('./routes/files');
 
 const app = express();
 // view engine setup
@@ -33,6 +34,7 @@ app.use('/api/links', linksRouter);
 app.use('/api/project', projectRouter);
 app.use('/api/system', systemRouter);
 app.use('/api/users', userRouter);
+app.use('/api/files', filesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

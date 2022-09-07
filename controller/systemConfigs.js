@@ -1,15 +1,15 @@
 const systemConfigModel = require('./schema/systemConfigs');
 
 function getSystemConfigList() {
-	return systemConfigModel.findOne({}, { __v: 0 }, { limit: 1 });
+	return systemConfigModel.find({}, { __v: 0 }, { limit: 1 });
 }
 
 function createSystemConfig(docs) {
 	return systemConfigModel.create(docs);
 }
 
-function updateSystemConfig(docs) {
-	return systemConfigModel.create(docs);
+function updateSystemConfig(id, docs) {
+	return systemConfigModel.updateOne({ _id: id }, docs);
 }
 
 function deleteSystemConfigById(id) {

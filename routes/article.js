@@ -6,20 +6,6 @@ const {
 	handleRequestError,
 } = require('../utils/index');
 
-/**
- * @api {get} /article/getArticleList?pageSize=10&pageNum=1 getArticleList
- * @apiName getArticleList
- * @apiGroup Article
- * @apiQuery {Number} pageSize pageSize
- * @apiQuery {Number} pageNum pageNum
- * @apiSuccessExample Success-Response:
- *     {
- *       "msg": "success",
- *       "data": "{...}"
- *       "code": 200
- *     }
- */
-
 // 获取文章列表
 blogRouter.get('/getArticleList', function (req, res) {
 	let { pageSize, pageNum } = req.query;
@@ -29,19 +15,6 @@ blogRouter.get('/getArticleList', function (req, res) {
 		handleRequestError(errorType.params_in, res);
 	}
 });
-
-/**
- * @api {get} /article/getArticleContentById/:id getArticleContentById
- * @apiName getArticleContentById
- * @apiGroup Article
- * @apiParam {String} id Article unique ID
- * @apiSuccessExample Success-Response:
- *     {
- *       "msg": "success",
- *       "data": "{...}"
- *       "code": 200
- *     }
- */
 
 // 根据文章 id 查询文章详情
 blogRouter.get('/getArticleContentById/:id', function (req, res) {

@@ -4,17 +4,6 @@ const {
 	handleRedisFunction,
 } = require('../utils/index');
 
-/**
- * @api {get} /system/getSystemConfig getSystemConfig
- * @apiName getSystemConfig
- * @apiGroup System
- * @apiSuccessExample Success-Response:
- *     {
- *       "msg": "success",
- *       "data": "{...}"
- *       "code": 200
- *     }
- */
 blogRouter.post('/login', function (req, res) {
 	let body = req.body;
 	res.send({

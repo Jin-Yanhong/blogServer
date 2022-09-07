@@ -25,19 +25,3 @@ and then, run the command below
 ```
 npm start
 ```
-
-## API DOC
-
-this project used apiDoc to generate api document,you should firstly run
-
-```
-npm i apidoc -g
-```
-
-and then
-
-```
-apidoc -i routes -o ./public/api
-```
-
-and visit [http://localhost:3000/api/](http://localhost:3000/apidoc/) in your browser
