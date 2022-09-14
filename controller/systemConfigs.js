@@ -1,7 +1,7 @@
 const systemConfigModel = require('./schema/systemConfigs');
 
-function getSystemConfigList() {
-	return systemConfigModel.find({}, { __v: 0 }, { limit: 1 });
+function getSystemConfigList(condition) {
+	return systemConfigModel.find({ ...condition }, { __v: 0 }, { limit: 1 });
 }
 
 function createSystemConfig(docs) {

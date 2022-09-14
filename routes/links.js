@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { errorType } = require('../utils/consts');
+const { errorType } = require('../utils/constant');
 
 const {
 	blogRouter,

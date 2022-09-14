@@ -1,4 +1,4 @@
-const { errorType } = require('../utils/consts');
+const { errorType } = require('../utils/constant');
 const { getFootPrintList } = require('../controller/footPrint');
 const {
 	blogRouter,

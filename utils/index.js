@@ -1,7 +1,7 @@
 // global router
 const express = require('express');
 const Router = express.Router();
-const { errorType } = require('./consts.js');
+const { errorType } = require('./constant.js');
 const Redis = require('../config/redis');
 // 开启跨域访问
 const blogRouter = Router.use(function (req, res, next) {
@@ -9,6 +9,7 @@ const blogRouter = Router.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
 	res.header('Content-Type', 'application/json;charset=utf-8');
+	res.header('Access-Control-Allow-Headers', 'Content-Type');
 	next();
 });
 
@@ -49,7 +50,7 @@ function handleRequestError(key, responseBody) {
 		case errorType.params_in:
 			responseBody.send({
 				msg: '入参错误',
-				code: 200,
+				code: 500,
 				data: {},
 			});
 			break;
@@ -57,7 +58,7 @@ function handleRequestError(key, responseBody) {
 		case errorType.params_out:
 			responseBody.send({
 				msg: '出参错误',
-				code: 200,
+				code: 500,
 				data: {},
 			});
 			break;

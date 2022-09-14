@@ -11,6 +11,7 @@ db.getCollection('articles').insertMany([
 		date: '2022 / 9 / 6',
 		author: 'Mr.King',
 		index: 1,
+		groupId: 1,
 		content: 'Here is the content of article 1',
 	},
 	{
@@ -19,6 +20,7 @@ db.getCollection('articles').insertMany([
 		date: '2022 / 9 / 6',
 		author: 'Mr.King',
 		index: 2,
+		groupId: 1,
 		content: 'Here is the content of article 2',
 	},
 ]);
@@ -51,23 +53,23 @@ db.createCollection('projects');
 
 db.getCollection('projects').insertMany([
 	{
-		name: '个人博客系统',
+		name: '个人网站',
 		desc: '这是个项目描述介绍。',
-		tag: ['大屏'],
-		technology: ['vue', 'react'],
+		tag: ['响应式', '前后端分离'],
+		technology: ['Vue3', 'React', 'TypeScript'],
 		screenShortUrl: 'http://localhost:3000/uploadFile/work.jpg',
 	},
 	{
-		name: '智慧病例',
+		name: '智慧社区',
 		desc: '这是个项目描述介绍。',
-		tag: ['大屏'],
+		tag: ['大屏', '国产地图'],
 		technology: ['vue', 'react'],
 		screenShortUrl: 'http://localhost:3000/uploadFile/work.jpg',
 	},
 	{
 		name: '智慧城市',
 		desc: '这是个项目描述介绍。',
-		tag: ['大屏'],
+		tag: ['大屏', '国产地图'],
 		technology: ['vue', 'react'],
 		screenShortUrl: 'http://localhost:3000/uploadFile/work.jpg',
 	},
@@ -112,6 +114,8 @@ db.getCollection('system_configs').insertOne({
 		email: 'jin-yanhong@foxmail.com',
 	},
 	lanLong: [103.827317, 36.0539],
+	isActive: true,
 });
 
 /*******************************************************************************************/
+

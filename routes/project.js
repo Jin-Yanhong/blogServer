@@ -1,4 +1,4 @@
-const { errorType } = require('../utils/consts');
+const { errorType } = require('../utils/constant');
 const { getProjectList, queryProjectById } = require('../controller/project');
 const {
 	blogRouter,

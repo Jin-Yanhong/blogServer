@@ -1,14 +1,21 @@
 const skillModel = require('./schema/skills');
 
-function getSkillsList() {
+/**
+ *
+ * @param { Number } pageSize pageSize
+ * @param { Number } pageNum pageNum
+ * @returns
+ */
+function getSkillsList(pageSize, pageNum) {
 	return skillModel.find(
 		{},
 		{ __v: 0 },
 		{
-			limit: 30,
 			sort: {
 				index: 1,
 			},
+			limit: pageSize,
+			skip: pageSize * (pageNum - 1),
 		}
 	);
 }
@@ -17,8 +24,8 @@ function createSkill(docs) {
 	return skillModel.create(docs);
 }
 
-function updateSkill(docs) {
-	return skillModel.create(docs);
+function updateSkill(id, docs) {
+	return skillModel.updateOne({ _id: id }, { ...docs });
 }
 
 function deleteSkillById(id) {
