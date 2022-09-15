@@ -4,10 +4,7 @@ const {
 	// handleRedisFunction,
 } = require('../utils/index');
 
-const {
-	getSystemConfigList,
-	updateSystemConfig,
-} = require('../controller/systemConfigs');
+const { getSystemConfigList, updateSystemConfig } = require('../controller/system');
 
 // 获取系统配置
 blogRouter.post('/getSystemConfig', function (req, res) {

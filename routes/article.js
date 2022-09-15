@@ -2,8 +2,8 @@ const { errorType } = require('../utils/constant');
 const { blogRouter, handleRequest, handleRequestError } = require('../utils/index');
 const { queryArticleById, createArticle, getArticleList, updateArticle, deleteArticleById } = require('../controller/article');
 
-// 获取文章列表
-blogRouter.put('/getArticleList', function (req, res) {
+// 新增文章
+blogRouter.put('/createArticle', function (req, res) {
 	let { article } = req.body;
 	if (article) {
 		handleRequest(createArticle(article), res);
@@ -44,7 +44,7 @@ blogRouter.post('/updateArticle/:id', function (req, res) {
 });
 
 // 删除文章
-blogRouter.delete('/updateArticle/:id', function (req, res) {
+blogRouter.delete('/deleteArticle/:id', function (req, res) {
 	let id = req?.params?.id;
 	if (id) {
 		handleRequest(deleteArticleById(id), res);

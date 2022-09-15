@@ -28,7 +28,7 @@ function deleteArticleById(id) {
 	return articleModel.findByIdAndDelete(id);
 }
 
-function updateArticle(_id,doc) {
+function updateArticle(_id, doc) {
 	return articleModel.findOneAndUpdate({ _id: id }, doc, {});
 }
 

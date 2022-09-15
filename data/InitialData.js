@@ -26,6 +26,54 @@ db.getCollection('articles').insertMany([
 ]);
 
 /*******************************************************************************************/
+// 字典数据
+
+db.getCollection('dicts').drop();
+
+db.createCollection('dicts');
+
+db.getCollection('dicts').insertMany([
+	{
+		key: 1,
+		label: '技术栈',
+		index: 1,
+		desc: '项目行业、应用大致分类',
+		value: [
+			{ label: 'HTML', value: 1 },
+			{ label: 'CSS', value: 2 },
+			{ label: 'JavaScript', value: 3 },
+			{ label: 'React', value: 4 },
+			{ label: 'Vue', value: 5 },
+			{ label: 'TypeScript', value: 6 },
+			{ label: 'Java', value: 7 },
+			{ label: 'Python', value: 8 },
+			{ label: 'OpenLayers', value: 9 },
+			{ label: 'three', value: 10 },
+			{ label: 'SSR', value: 11 },
+			{ label: 'Node', value: 12 },
+			{ label: 'Express', value: 13 },
+			{ label: 'MongoDB', value: 14 },
+			{ label: 'MySQL', value: 15 },
+			{ label: 'Java', value: 16 },
+			{ label: 'Python', value: 17 },
+			{ label: 'Auto-Testing', value: 18 },
+		],
+	},
+	{
+		key: 2,
+		label: '项目应用类型',
+		index: 2,
+		desc: '实际项目中过程中所用到的技术栈',
+		value: [
+			{ label: '国产地图', value: 1 },
+			{ label: '大屏', value: 2 },
+			{ label: '智慧应用', value: 3 },
+			{ label: '数据分析', value: 4 },
+		],
+	},
+]);
+
+/*******************************************************************************************/
 // 足迹数据
 db.getCollection('foot_prints').drop();
 
@@ -47,12 +95,13 @@ db.getCollection('foot_prints').insertMany([
 
 /*******************************************************************************************/
 // 项目数据
-db.getCollection('projects').drop();
+db.getCollection('works').drop();
 
-db.createCollection('projects');
+db.createCollection('works');
 
-db.getCollection('projects').insertMany([
+db.getCollection('works').insertMany([
 	{
+		index: 1,
 		name: '个人网站',
 		desc: '这是个项目描述介绍。',
 		tag: ['响应式', '前后端分离'],
@@ -60,6 +109,7 @@ db.getCollection('projects').insertMany([
 		screenShortUrl: 'http://localhost:3000/uploadFile/work.jpg',
 	},
 	{
+		index: 2,
 		name: '智慧社区',
 		desc: '这是个项目描述介绍。',
 		tag: ['大屏', '国产地图'],
@@ -67,6 +117,7 @@ db.getCollection('projects').insertMany([
 		screenShortUrl: 'http://localhost:3000/uploadFile/work.jpg',
 	},
 	{
+		index: 3,
 		name: '智慧城市',
 		desc: '这是个项目描述介绍。',
 		tag: ['大屏', '国产地图'],

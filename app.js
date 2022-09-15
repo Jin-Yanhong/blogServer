@@ -7,10 +7,11 @@ const Mongoose = require('./config/mongoDB');
 
 // App routers
 const articleRouter = require('./routes/article');
+const dictRouter = require('./routes/dict');
 const footPrintRouter = require('./routes/footPrint');
 const skillsRouter = require('./routes/skills');
 const linksRouter = require('./routes/links');
-const projectRouter = require('./routes/project');
+const workRouter = require('./routes/work');
 const systemRouter = require('./routes/system');
 const userRouter = require('./routes/user');
 const filesRouter = require('./routes/files');
@@ -28,10 +29,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // when it is visited ,use the flowing router
 app.use('/api/article', articleRouter);
+app.use('/api/dict', dictRouter);
 app.use('/api/footPrint', footPrintRouter);
 app.use('/api/skills', skillsRouter);
 app.use('/api/links', linksRouter);
-app.use('/api/project', projectRouter);
+app.use('/api/work', workRouter);
 app.use('/api/system', systemRouter);
 app.use('/api/users', userRouter);
 app.use('/api/files', filesRouter);
