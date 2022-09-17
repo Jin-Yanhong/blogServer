@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const Mongoose = require('./config/mongoDB');
@@ -35,8 +36,10 @@ app.use('/api/skills', skillsRouter);
 app.use('/api/links', linksRouter);
 app.use('/api/work', workRouter);
 app.use('/api/system', systemRouter);
-app.use('/api/users', userRouter);
+app.use('/api/user', userRouter);
 app.use('/api/files', filesRouter);
+
+dotenv.config();
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

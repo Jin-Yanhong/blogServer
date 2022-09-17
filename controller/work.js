@@ -19,8 +19,8 @@ function deleteWorkById(id) {
 	return workModel.findByIdAndDelete(id);
 }
 
-function updateWork(doc) {
-	return workModel.findOneAndUpdate({ _id: id }, doc, {});
+function updateWork(id, doc) {
+	return workModel.updateOne({ _id: id }, doc);
 }
 
 function queryWorkById(id) {

@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const dictSchema = new mongoose.Schema({
-	key: String,
+const dictKeySchema = new mongoose.Schema({
+	key: Number,
 	value: Array,
 	index: Number,
 	label: String,
 	desc: String,
 });
 
-const dictModel = mongoose.model('dicts', dictSchema);
+const dictKeyModel = mongoose.model('dicts', dictKeySchema);
 
-module.exports = dictModel;
+module.exports = dictKeyModel;

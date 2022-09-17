@@ -74,6 +74,15 @@ db.getCollection('dicts').insertMany([
 ]);
 
 /*******************************************************************************************/
+// 用户数据
+
+db.getCollection('users').drop();
+
+db.createCollection('users');
+
+db.getCollection('users').insertMany([{ user_name: 'admin', password: 'admin', _id: 'adminno1' }]);
+
+/*******************************************************************************************/
 // 足迹数据
 db.getCollection('foot_prints').drop();
 
@@ -105,7 +114,7 @@ db.getCollection('works').insertMany([
 		name: '个人网站',
 		desc: '这是个项目描述介绍。',
 		tag: ['响应式', '前后端分离'],
-		technology: ['Vue3', 'React', 'TypeScript'],
+		technology: ['React', 'TypeScript'],
 		screenShortUrl: 'http://localhost:3000/uploadFile/work.jpg',
 	},
 	{

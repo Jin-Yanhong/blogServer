@@ -1,5 +1,5 @@
 const { errorType } = require('../utils/constant');
-const { getWorkList, queryWorkById } = require('../controller/work');
+const { getWorkList, updateWork, queryWorkById } = require('../controller/work');
 const { blogRouter, handleRequest, handleRequestError } = require('../utils/index');
 
 blogRouter.get('/getWorkList', function (req, res) {
@@ -16,6 +16,17 @@ blogRouter.get('/getWorkDetail/:id', function (req, res) {
 	let id = req?.params?.id;
 	if (id) {
 		handleRequest(queryWorkById(id), res);
+	} else {
+		handleRequestError(errorType.params_in, res);
+	}
+});
+
+// 获取项目详情
+blogRouter.post('/updateWork/:id', function (req, res) {
+	let id = req?.params?.id;
+	let work = req.body.work;
+	if (id) {
+		handleRequest(updateWork(id, work), res);
 	} else {
 		handleRequestError(errorType.params_in, res);
 	}
