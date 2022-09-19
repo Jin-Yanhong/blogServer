@@ -15,7 +15,7 @@ function createWork(docs) {
 	return workModel.create(docs);
 }
 
-function deleteWorkById(id) {
+function deleteWork(id) {
 	return workModel.findByIdAndDelete(id);
 }
 
@@ -30,7 +30,7 @@ function queryWorkById(id) {
 module.exports = {
 	getWorkList,
 	createWork,
-	deleteWorkById,
+	deleteWork,
 	updateWork,
 	queryWorkById,
 };

@@ -1,10 +1,11 @@
 // global router
 const express = require('express');
 const Router = express.Router();
-const { errorType } = require('./constant.js');
+const { failMsgCode, successMsgCode } = require('./constant.js');
 const Redis = require('../config/redis');
-// 开启跨域访问
-const blogRouter = Router.use(function (req, res, next) {
+const jwtUtils = require('../middleware/jwt');
+//  定义中央路由,所有的路由都要经过这个路由
+const centerRouter = Router.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Credentials', 'true');
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
@@ -13,58 +14,45 @@ const blogRouter = Router.use(function (req, res, next) {
 	next();
 });
 
+// 所有对数据修改的接口加上校验
+// centerRouter.put('*', function (req, res, next) {
+// 	jwtUtils.verify(req, res, next);
+// });
+
+// centerRouter.delete('*', function (req, res, next) {
+// 	jwtUtils.verify(req, res, next);
+// });
+
+// // 排除登录
+// centerRouter.post('/user/[^login].*', function (req, res, next) {
+// 	jwtUtils.verify(req, res, next);
+// });
+
 /**
  *
- * @param { Promise } reqPromise 请求任务
- * @param { Object } responseBody responseBody
+ * @param {Promise} taskPromise 查询任务
+ * @param {Express.Response} response 响应体
  */
-function handleRequest(reqPromise, responseBody, callback) {
-	reqPromise
-		.then((data) => {
+function handleRequest(taskPromise, response, { args = {}, callback = undefined } = {}) {
+	if (args === undefined || args === null) {
+		response.send({
+			...failMsgCode.params,
+		});
+		return;
+	}
+	try {
+		taskPromise.then(data => {
 			if (callback) {
 				callback(data);
 			} else {
-				responseBody.send({
-					msg: 'success',
-					code: 200,
-					data: data,
-				});
+				response.send(successMsgCode(data));
 			}
-		})
-		.catch((err) => {
-			responseBody.send({
-				msg: err.message,
-				code: 200,
-				data: {},
-			});
 		});
-}
-
-/**
- *
- * @param { string } key errorType
- * @param { responseBody } responseBody responseBody
- */
-function handleRequestError(key, responseBody) {
-	switch (key) {
-		case errorType.params_in:
-			responseBody.send({
-				msg: '入参错误',
-				code: 500,
-				data: {},
-			});
-			break;
-
-		case errorType.params_out:
-			responseBody.send({
-				msg: '出参错误',
-				code: 500,
-				data: {},
-			});
-			break;
-
-		default:
-			break;
+	} catch (err) {
+		response.send({
+			...failMsgCode.queryError,
+			msg: failMsgCode.queryError.msg + err.message,
+		});
 	}
 }
 
@@ -85,37 +73,37 @@ function handleRedisFunction(caseKey, callback, { key, value } = argsObject) {
 	switch (caseKey) {
 		case redisFunction.ping:
 			Redis.ping()
-				.then((result) => {
+				.then(result => {
 					callback(result);
 				})
-				.catch((err) => {
+				.catch(err => {
 					console.log(`${caseKey} error`, err);
 				});
 			break;
 		case redisFunction.get:
 			Redis.get(key)
-				.then((result) => {
+				.then(result => {
 					callback(result);
 				})
-				.catch((err) => {
+				.catch(err => {
 					console.log(`${caseKey} error`, err);
 				});
 			break;
 		case redisFunction.incr:
 			Redis.incr(key)
-				.then((result) => {
+				.then(result => {
 					callback(result);
 				})
-				.catch((err) => {
+				.catch(err => {
 					console.log(`${caseKey} error`, err);
 				});
 			break;
 		case redisFunction.set:
 			Redis.set(`${key}`, JSON.stringify(value))
-				.then((result) => {
+				.then(result => {
 					callback(result);
 				})
-				.catch((err) => {
+				.catch(err => {
 					console.log(`${caseKey} error`, err);
 				});
 			break;
@@ -123,10 +111,10 @@ function handleRedisFunction(caseKey, callback, { key, value } = argsObject) {
 			new Promise((resolve, reject) => {
 				resolve({});
 			})
-				.then((result) => {
+				.then(result => {
 					callback(result);
 				})
-				.catch((err) => {
+				.catch(err => {
 					console.log(`${caseKey} error`, err);
 				});
 			break;
@@ -135,9 +123,8 @@ function handleRedisFunction(caseKey, callback, { key, value } = argsObject) {
 
 // 部分导出错误处理
 module.exports = {
-	blogRouter,
+	centerRouter,
 	redisFunction,
 	handleRedisFunction,
 	handleRequest,
-	handleRequestError,
 };

@@ -1,35 +1,54 @@
-const { errorType } = require('../utils/constant');
-const { getWorkList, updateWork, queryWorkById } = require('../controller/work');
-const { blogRouter, handleRequest, handleRequestError } = require('../utils/index');
+const jwtUtils = require('../middleware/jwt');
+const { getWorkList, createWork, updateWork, queryWorkById, deleteWork } = require('../controller/work');
+const { centerRouter, handleRequest } = require('../utils/index');
 
-blogRouter.get('/getWorkList', function (req, res) {
+// 新增作品
+centerRouter.put(
+	'/createWork',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let work = req.body.work;
+		handleRequest(createWork(work), res, { args: { work } });
+	}
+);
+
+// 删除作品
+centerRouter.delete(
+	'/deleteWork/:id',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let id = req?.params?.id;
+		handleRequest(deleteWork(id), res, { args: { id } });
+	}
+);
+
+// 修改作品
+centerRouter.post(
+	'/updateWork/:id',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let id = req?.params?.id;
+		let work = req.body.work;
+		handleRequest(updateWork(id, work), res, { args: { id, work } });
+	}
+);
+
+// 获取作品详情
+centerRouter.get('/getWorkDetail/:id', function (req, res) {
+	let id = req?.params?.id;
+	handleRequest(queryWorkById(id), res, { args: { id } });
+});
+
+// 获取作品详情
+centerRouter.get('/getWorkList', function (req, res, next) {
 	let { pageSize, pageNum } = req.query;
-	if (pageSize && pageNum) {
-		handleRequest(getWorkList(pageSize, pageNum), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
+	handleRequest(getWorkList(pageSize, pageNum), res, { args: { pageSize, pageNum } });
 });
 
-// 获取项目详情
-blogRouter.get('/getWorkDetail/:id', function (req, res) {
-	let id = req?.params?.id;
-	if (id) {
-		handleRequest(queryWorkById(id), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
-});
-
-// 获取项目详情
-blogRouter.post('/updateWork/:id', function (req, res) {
-	let id = req?.params?.id;
-	let work = req.body.work;
-	if (id) {
-		handleRequest(updateWork(id, work), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
-});
-
-module.exports = blogRouter;
+module.exports = centerRouter;

@@ -1,46 +1,49 @@
-const { blogRouter, handleRequest, handleRequestError } = require('../utils/index');
+const { centerRouter, handleRequest } = require('../utils/index');
 const { errorType } = require('../utils/constant');
 const { getSkillsList, createSkill, updateSkill, deleteSkillById } = require('../controller/skills');
-
-// 获取工作技能列表
-blogRouter.get('/getSkillsList', function (req, res) {
-	let { pageSize, pageNum } = req.query;
-	if (pageSize && pageNum) {
-		handleRequest(getSkillsList(pageSize, pageNum), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
-});
+const jwtUtils = require('../middleware/jwt');
 
 // 创建技能
-blogRouter.put('/createSkill', function (req, res) {
-	let { skill } = req.body;
-	if (skill) {
-		handleRequest(createSkill(skill), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
+centerRouter.put(
+	'/createSkill',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let { skill } = req.body;
+		handleRequest(createSkill(skill), res, { args: { skill } });
 	}
-});
-
-// 更新技能
-blogRouter.post('/updateSkill/:id', function (req, res) {
-	let { id } = req.params;
-	let { skill } = req.body;
-	if (id && skill) {
-		handleRequest(updateSkill(id, skill), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
-});
+);
 
 // 删除工作技能
-blogRouter.delete('/deleteSkill/:id', function (req, res) {
-	let { id } = req.params;
-	if (id) {
-		handleRequest(deleteSkillById(id), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
+centerRouter.delete(
+	'/deleteSkill/:id',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let { id } = req.params;
+		handleRequest(deleteSkillById(id), res, { args: { id } });
 	}
+);
+
+// 更新技能
+centerRouter.post(
+	'/updateSkill/:id',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let { id } = req.params;
+		let { skill } = req.body;
+		handleRequest(updateSkill(id, skill), res, { args: { id, skill } });
+	}
+);
+
+// 获取工作技能列表
+centerRouter.get('/getSkillsList', function (req, res) {
+	let { pageSize, pageNum } = req.query;
+	handleRequest(getSkillsList(pageSize, pageNum), res, { args: { pageSize, pageNum } });
 });
 
-module.exports = blogRouter;
+module.exports = centerRouter;

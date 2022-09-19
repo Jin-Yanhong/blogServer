@@ -1,65 +1,79 @@
-const { errorType } = require('../utils/constant');
-const { blogRouter, handleRequest, handleRequestError } = require('../utils/index');
+const { centerRouter, handleRequest } = require('../utils/index');
 const { queryDictById, createDict, getDictList, updateDict, deleteDictById, useDictByKey } = require('../controller/Dict');
+const jwtUtils = require('../middleware/jwt');
 
 // 新增字典
-blogRouter.put('/createDict', function (req, res) {
-	let { dict } = req.body;
-	if (dict) {
-		handleRequest(createDict(Dict), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
+centerRouter.put(
+	'/createDict',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let { dict } = req.body;
+		handleRequest(createDict(dict), res, { article });
 	}
-});
+);
 
-// 获取字典列表
-blogRouter.get('/getDictList', function (req, res) {
-	let { pageSize, pageNum } = req.query;
-	if (pageSize && pageNum) {
-		handleRequest(getDictList(pageSize, pageNum), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
+// 删除字典
+centerRouter.delete(
+	'/deleteDict/:id',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let id = req?.params?.id;
+		if (id) {
+			handleRequest(deleteDictById(id), res);
+		}
 	}
-});
-
-// 查询字典详情
-blogRouter.get('/getDictContent/:id', function (req, res) {
-	let id = req?.params?.id;
-	if (id) {
-		handleRequest(queryDictById(id), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
-});
+);
 
 // 更新字典
-blogRouter.post('/updateDict/:id', function (req, res) {
-	let { id } = req.params;
-	let { dict } = req.body;
-	if (id && dict) {
-		handleRequest(updateDict(id, dict), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
+centerRouter.post(
+	'/updateDict/:id',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let { id } = req.params;
+		let { dict } = req.body;
+		handleRequest(updateDict(id, dict), res, {
+			args: { id, dict },
+		});
 	}
-});
+);
+
+// 查询字典详情
+centerRouter.get(
+	'/getDictContent/:id',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let id = req?.params?.id;
+		handleRequest(queryDictById(id), res, {
+			args: { id },
+		});
+	}
+);
+// 获取字典列表
+centerRouter.get(
+	'/getDictList',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let { pageSize, pageNum } = req.query;
+		handleRequest(getDictList(pageSize, pageNum), res, {
+			args: { pageSize, pageNum },
+		});
+	}
+);
 
 // 使用字典
-blogRouter.get('/useDict/:key', function (req, res) {
+centerRouter.get('/useDict/:key', function (req, res) {
 	let key = req?.params?.key;
-	if (key) {
-		handleRequest(useDictByKey(key), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
-});
-// 删除字典
-blogRouter.delete('/deleteDict/:id', function (req, res) {
-	let id = req?.params?.id;
-	if (id) {
-		handleRequest(deleteDictById(id), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
+	handleRequest(useDictByKey(key), res, { args: { key } });
 });
 
-module.exports = blogRouter;
+module.exports = centerRouter;

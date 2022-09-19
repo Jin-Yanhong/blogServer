@@ -1,56 +1,53 @@
-const { errorType } = require('../utils/constant');
-const { blogRouter, handleRequest, handleRequestError } = require('../utils/index');
+const { centerRouter, handleRequest } = require('../utils/index');
 const { queryArticleById, createArticle, getArticleList, updateArticle, deleteArticleById } = require('../controller/article');
-
+const jwtUtils = require('../middleware/jwt');
 // 新增文章
-blogRouter.put('/createArticle', function (req, res) {
-	let { article } = req.body;
-	if (article) {
-		handleRequest(createArticle(article), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
+centerRouter.put(
+	'/createArticle',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let { article } = req.body;
+		handleRequest(createArticle(article), res, { article });
 	}
-});
+);
 
 // 获取文章列表
-blogRouter.get('/getArticleList', function (req, res) {
+centerRouter.get('/getArticleList', function (req, res, next) {
 	let { pageSize, pageNum } = req.query;
-	if (pageSize && pageNum) {
-		handleRequest(getArticleList(pageSize, pageNum), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
+	handleRequest(getArticleList(pageSize, pageNum), res, { args: { pageSize, pageNum } });
 });
 
 // 查询文章详情
-blogRouter.get('/getArticleContent/:id', function (req, res) {
+centerRouter.get('/getArticleContent/:id', function (req, res) {
 	let id = req?.params?.id;
-	if (id) {
-		handleRequest(queryArticleById(id), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
-	}
+	handleRequest(queryArticleById(id), res, { args: { id } });
 });
 
 // 更新文章
-blogRouter.post('/updateArticle/:id', function (req, res) {
-	let { id } = req.params;
-	let { article } = req.body;
-	if (id && article) {
-		handleRequest(updateArticle(id, article), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
+centerRouter.post(
+	'/updateArticle/:id',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let { id } = req.params;
+		let { article } = req.body;
+		handleRequest(updateArticle(id, article), res, { args: { id, article } });
 	}
-});
+);
 
 // 删除文章
-blogRouter.delete('/deleteArticle/:id', function (req, res) {
-	let id = req?.params?.id;
-	if (id) {
-		handleRequest(deleteArticleById(id), res);
-	} else {
-		handleRequestError(errorType.params_in, res);
+centerRouter.delete(
+	'/deleteArticle/:id',
+	function (req, res, next) {
+		jwtUtils.verify(req, res, next);
+	},
+	function (req, res) {
+		let id = req?.params?.id;
+		handleRequest(deleteArticleById(id), res, { args: { id } });
 	}
-});
+);
 
-module.exports = blogRouter;
+module.exports = centerRouter;

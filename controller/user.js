@@ -7,17 +7,16 @@ const userModel = require('./schema/user');
  * @returns
  */
 
-function getUserList(condition) {
-	return userModel.findOne({
-		...condition,
-	});
+async function getUserList(condition) {
+	const userList = await userModel.find(condition);
+	return userList;
 }
 
 function createUser(docs) {
 	return userModel.create(docs);
 }
 
-function deleteUserById(id) {
+function deleteUser(id) {
 	return userModel.findByIdAndDelete(id);
 }
 
@@ -32,7 +31,7 @@ function queryUserById(id) {
 module.exports = {
 	getUserList,
 	createUser,
-	deleteUserById,
+	deleteUser,
 	updateUser,
 	queryUserById,
 };
