@@ -36,10 +36,7 @@ const jwtUtils = {
 			try {
 				jwt.verify(token, jwtSecretKey, { algorithms: ['RS256'] }, function (err, decode) {
 					if (err) {
-						console.log(err.message);
 						throw new Error(err.message);
-					} else {
-						console.log(decode);
 					}
 				});
 				next();
