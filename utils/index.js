@@ -3,7 +3,7 @@ const express = require('express');
 const Router = express.Router();
 const { failMsgCode, successMsgCode } = require('./constant.js');
 const Redis = require('../config/redis');
-const jwtUtils = require('../middleware/jwt');
+
 //  定义中央路由,所有的路由都要经过这个路由
 const centerRouter = Router.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Credentials', 'true');

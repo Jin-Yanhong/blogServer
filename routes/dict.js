@@ -10,7 +10,7 @@ centerRouter.put(
 	},
 	function (req, res) {
 		let { dict } = req.body;
-		handleRequest(createDict(dict), res, { article });
+		handleRequest(createDict(dict), res, { dict });
 	}
 );
 

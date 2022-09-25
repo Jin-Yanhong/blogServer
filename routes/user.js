@@ -5,8 +5,8 @@ const auth = require('../middleware/userAuth');
 const { successMsgCode } = require('../utils/constant');
 
 // 用户登录
-centerRouter.post('/login', function (req, res, next) {
-	auth.verifyLogin(req, res, next);
+centerRouter.post('/login', function (req, res) {
+	auth.verifyLogin(req, res);
 });
 
 // 新增用户
@@ -48,7 +48,7 @@ centerRouter.post(
 
 // 用户详情
 centerRouter.get(
-	'/login',
+	'/userInfo/:id',
 	function (req, res, next) {
 		jwtUtils.verify(req, res, next);
 	},

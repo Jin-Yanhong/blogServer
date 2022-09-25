@@ -1,5 +1,9 @@
+const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const { failMsgCode } = require('../utils/constant');
+const path = require('path');
+const publicKey = fs.readFileSync(path.join(__dirname, '../config/key/public.key'));
+const privateKey = fs.readFileSync(path.join(__dirname, '../config/key/private.key'));
 
 const jwtUtils = {
 	sign: (id, res) => {
@@ -8,10 +12,13 @@ const jwtUtils = {
 			userId: id,
 		};
 
-		const jwtSecretKey = process.env.JWT_SECRET_KEY;
+		const jwtSecretKey = privateKey;
 
 		try {
-			const token = jwt.sign(data, jwtSecretKey, { expiresIn: 60 * 60 });
+			const token = jwt.sign(data, jwtSecretKey, {
+				expiresIn: '1h',
+				algorithm: 'RS256',
+			});
 			return token;
 		} catch (error) {
 			res.send({
@@ -21,11 +28,20 @@ const jwtUtils = {
 		}
 	},
 	verify: (req, res, next) => {
-		const jwtSecretKey = process.env.JWT_SECRET_KEY;
+		const jwtSecretKey = publicKey;
+
 		const token = req.headers.accesstoken;
+
 		if (token) {
 			try {
-				jwt.verify(token, jwtSecretKey);
+				jwt.verify(token, jwtSecretKey, { algorithms: ['RS256'] }, function (err, decode) {
+					if (err) {
+						console.log(err.message);
+						throw new Error(err.message);
+					} else {
+						console.log(decode);
+					}
+				});
 				next();
 			} catch (err) {
 				res.send({

@@ -20,6 +20,11 @@ const failMsgCode = {
 		msg: '用户未授权',
 		data: {},
 	},
+	userPasswordError: {
+		code: 50005,
+		msg: '密码错误',
+		data: {},
+	},
 	// 其他错误
 	other: {
 		code: 50010,

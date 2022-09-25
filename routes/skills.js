@@ -1,5 +1,4 @@
 const { centerRouter, handleRequest } = require('../utils/index');
-const { errorType } = require('../utils/constant');
 const { getSkillsList, createSkill, updateSkill, deleteSkillById } = require('../controller/skills');
 const jwtUtils = require('../middleware/jwt');
 

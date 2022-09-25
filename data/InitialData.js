@@ -80,7 +80,7 @@ db.getCollection('users').drop();
 
 db.createCollection('users');
 
-db.getCollection('users').insertMany([{ user_name: 'admin', password: 'admin', _id: 'adminno1' }]);
+db.getCollection('users').insertMany([{ user_name: 'admin', password: '555953961,2052564391,1133070862,1249910723', _id: 'adminno1' }]);
 
 /*******************************************************************************************/
 // 足迹数据
