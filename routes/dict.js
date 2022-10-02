@@ -1,5 +1,5 @@
 const { centerRouter, handleRequest } = require('../utils/index');
-const { queryDictById, createDict, getDictList, updateDict, deleteDictById, useDictByKey } = require('../controller/Dict');
+const { queryDictById, createDict, getDictList, updateDict, deleteDictById, useDictByKey } = require('../controller/dict');
 const jwtUtils = require('../middleware/jwt');
 
 // 新增字典

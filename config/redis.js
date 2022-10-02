@@ -1,4 +1,4 @@
-const { createClient } = require('Redis');
+const { createClient } = require('redis');
 const { RedisServer } = require('./appConfig');
 const Redis = createClient({
 	socket: {
