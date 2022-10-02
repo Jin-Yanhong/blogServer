@@ -9,7 +9,13 @@ const MongoDBServer = {
 	db: 'blog',
 };
 
+const WxMiniApp = {
+	appid: 'wx3288ea98ebe031cc',
+	AppSecret: 'bd01d5970dba80caca26f52433682434',
+};
+
 module.exports = {
 	RedisServer,
 	MongoDBServer,
+	WxMiniApp,
 };

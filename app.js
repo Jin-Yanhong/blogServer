@@ -16,6 +16,7 @@ const workRouter = require('./routes/work');
 const systemRouter = require('./routes/system');
 const userRouter = require('./routes/user');
 const filesRouter = require('./routes/files');
+const wxRouter = require('./routes/wx');
 
 const app = express();
 // view engine setup
@@ -38,6 +39,7 @@ app.use('/api/work', workRouter);
 app.use('/api/system', systemRouter);
 app.use('/api/user', userRouter);
 app.use('/api/files', filesRouter);
+app.use('/api/wx', wxRouter);
 
 dotenv.config();
 
