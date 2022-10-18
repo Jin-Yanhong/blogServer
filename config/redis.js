@@ -1,10 +1,10 @@
 const { createClient } = require('redis');
 const { RedisServer } = require('./appConfig');
 const Redis = createClient({
-	socket: {
-		host: RedisServer.host,
-		port: RedisServer.port,
-	},
+    socket: {
+        host: RedisServer.host,
+        port: RedisServer.port,
+    },
 });
 /* 
 // Redis usage example 

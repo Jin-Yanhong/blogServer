@@ -7,34 +7,34 @@ const skillModel = require('./schema/skills');
  * @returns
  */
 function getSkillsList(pageSize, pageNum) {
-	return skillModel.find(
-		{},
-		{ __v: 0 },
-		{
-			sort: {
-				index: 1,
-			},
-			limit: pageSize,
-			skip: pageSize * (pageNum - 1),
-		}
-	);
+    return skillModel.find(
+        {},
+        { __v: 0 },
+        {
+            sort: {
+                index: 1,
+            },
+            limit: pageSize,
+            skip: pageSize * (pageNum - 1),
+        }
+    );
 }
 
 function createSkill(docs) {
-	return skillModel.create(docs);
+    return skillModel.create(docs);
 }
 
 function updateSkill(id, docs) {
-	return skillModel.updateOne({ _id: id }, { ...docs });
+    return skillModel.updateOne({ _id: id }, { ...docs });
 }
 
 function deleteSkillById(id) {
-	return skillModel.findByIdAndDelete(id);
+    return skillModel.findByIdAndDelete(id);
 }
 
 module.exports = {
-	getSkillsList,
-	createSkill,
-	updateSkill,
-	deleteSkillById,
+    getSkillsList,
+    createSkill,
+    updateSkill,
+    deleteSkillById,
 };

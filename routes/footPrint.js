@@ -3,7 +3,7 @@ const { centerRouter, handleRequest } = require('../utils/index');
 
 // 获取我的足迹
 centerRouter.get('/getFootPrintList', function (req, res) {
-	handleRequest(getFootPrintList(), res);
+    handleRequest(getFootPrintList(), res);
 });
 
 module.exports = centerRouter;

@@ -4,15 +4,21 @@ module.exports = {
 		commonjs: true,
 		es2021: true,
 	},
-	extends: 'eslint:recommended',
+	extends: 'google',
 	overrides: [],
 	parserOptions: {
 		ecmaVersion: 'latest',
 	},
 	rules: {
-		indent: ['error', 'tab'],
-		'linebreak-style': ['error', 'windows'],
-		quotes: ['error', 'single'],
-		semi: ['error', 'always'],
+		indent: ['warn', 4],
+		quotes: ['warn', 'single'],
+		semi: ['warn', 'always'],
+		'max-len': ['warn', { code: 360 }],
+		'linebreak-style': ['warn', 'windows'],
+		'object-curly-spacing': ['warn', 'always'],
+		'space-before-function-paren': ['warn', 'always'],
+		'require-jsdoc': 0,
+		'valid-jsdoc': 0,
 	},
 };
+

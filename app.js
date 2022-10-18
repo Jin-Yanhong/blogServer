@@ -45,11 +45,11 @@ dotenv.config();
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-	res.status(404).send({
-		data: {},
-		code: 404,
-		message: 'Are you sure that the path ** ' + req.url + ' ** is exist ?',
-	});
+    res.status(404).send({
+        data: {},
+        code: 404,
+        message: 'Are you sure that the path ** ' + req.url + ' ** is exist ?',
+    });
 });
 
 // Handle MongoDB Service Connection
@@ -68,11 +68,11 @@ Redis.connect()
 
 // error handler
 app.use(function (err, req, res, next) {
-	res.status(err.status || 500).send({
-		data: {},
-		code: err.status || 500,
-		message: err.message,
-	});
+    res.status(err.status || 500).send({
+        data: {},
+        code: err.status || 500,
+        message: err.message,
+    });
 });
 
 module.exports = app;

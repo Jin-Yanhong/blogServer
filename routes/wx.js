@@ -12,7 +12,7 @@ async function getAccessToken() {
 	return result;
 }
 // 微信登录
-centerRouter.get('/login', function (req, res) {
+centerRouter.get('/wxLogin', function (req, res) {
 	let code = req.query.code;
 	let request = axios.get(code2Session + `?appid=${WxMiniApp.appid}&secret=${WxMiniApp.AppSecret}&js_code=${code}&grant_type=authorization_code`).then(function (result) {
 		return result;
@@ -51,4 +51,5 @@ centerRouter.get('/getPhone', async function (req, res) {
 		},
 	});
 });
+
 module.exports = centerRouter;

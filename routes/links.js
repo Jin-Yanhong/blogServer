@@ -7,16 +7,16 @@ const bingApi = 'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=10&nc
 
 // 必应壁纸
 centerRouter.get('/bingWallpaper', function (req, res) {
-	let request = axios.get(bingApi).then(function (result) {
-		let output = [];
-		let data = result.data.images;
-		for (let i = 0; i < data.length; i++) {
-			output.push('https://cn.bing.com' + data[i].url);
-		}
-		return output;
-	});
+    let request = axios.get(bingApi).then(function (result) {
+        let output = [];
+        let data = result.data.images;
+        for (let i = 0; i < data.length; i++) {
+            output.push('https://cn.bing.com' + data[i].url);
+        }
+        return output;
+    });
 
-	handleRequest(request, res);
+    handleRequest(request, res);
 });
 
 module.exports = centerRouter;

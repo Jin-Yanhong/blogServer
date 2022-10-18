@@ -3,15 +3,15 @@ const mongoose = require('mongoose');
 const URL = `mongodb://${MongoDBServer.host}:${MongoDBServer.port}/${MongoDBServer.db}`;
 
 const Mongoose = {
-	connect() {
-		mongoose.connect(URL, (err) => {
-			if (err) {
-				console.log('Database connection failed');
-				return;
-			}
-			console.log('Database connection succeeded');
-		});
-	},
+    connect() {
+        mongoose.connect(URL, err => {
+            if (err) {
+                console.log('Database connection failed');
+                return;
+            }
+            console.log('Database connection succeeded');
+        });
+    },
 };
 
 module.exports = Mongoose;

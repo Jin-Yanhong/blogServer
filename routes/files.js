@@ -1,9 +1,49 @@
+const fs = require('fs');
+const path = require('path');
 const { centerRouter, handleRequest } = require('../utils/index');
-const { successMsgCode } = require('../utils/constant');
+const { successMsgCode, failMsgCode } = require('../utils/constant');
 const saveFileToDisk = require('../middleware/saveFileToDisk');
 const saveFileToDataBase = require('../middleware/saveFileToDataBase');
-
 const jwtUtils = require('../middleware/jwt');
+
+centerRouter.get('/listDiskFiles', async function (req, res) {
+	const diskPath = path.join(__dirname, '../public/uploadFile');
+	console.log(diskPath);
+	await fs.readdir(diskPath, function (err, files) {
+		try {
+			res.send(
+				successMsgCode({
+					list: files,
+				})
+			);
+		} catch (error) {
+			res.send({
+				...failMsgCode.other,
+				msg: err.message,
+			});
+		}
+	});
+});
+
+centerRouter.get('/listDBFiles', async function (req, res) {
+	const diskPath = path.join(__dirname, '../public/uploadFile');
+	console.log(diskPath);
+	await fs.readdir(diskPath, function (err, files) {
+		try {
+			res.send(
+				successMsgCode({
+					list: files,
+				})
+			);
+		} catch (error) {
+			res.send({
+				...failMsgCode.other,
+				msg: err.message,
+			});
+		}
+	});
+});
+
 // 文件上传
 centerRouter.post(
 	'/saveFileToDisk',
