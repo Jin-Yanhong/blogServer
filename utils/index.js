@@ -1,30 +1,14 @@
-// global router
-
 const { failMsgCode, successMsgCode } = require('./constant.js');
 const Redis = require('../config/redis');
 
-function routerConfig(res, req, next) {
+const routerConfig = (res) => {
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
     res.header('Content-Type', 'application/json;charset=utf-8');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.header('Access-Control-Allow-Headers', 'accesstoken');
-    next();
-}
-// 所有对数据修改的接口加上校验
-// Router.put('*', function (req, res, next) {
-// 	jwtUtils.verify(req, res, next);
-// });
-
-// Router.delete('*', function (req, res, next) {
-// 	jwtUtils.verify(req, res, next);
-// });
-
-// // 排除登录
-// Router.post('/user/[^login].*', function (req, res, next) {
-// 	jwtUtils.verify(req, res, next);
-// });
+};
 
 /**
  *
@@ -122,7 +106,7 @@ function handleRedisFunction(caseKey, callback, { key, value }) {
 // 部分导出错误处理
 module.exports = {
     routerConfig,
-    redisFunction,
     handleRedisFunction,
     handleRequest,
+    redisFunction,
 };

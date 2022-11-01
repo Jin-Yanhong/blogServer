@@ -10,8 +10,11 @@ const jwtUtils = require('../middleware/jwt');
 const Router = express.Router();
 
 Router.use(function (req, res, next) {
-    routerConfig(res, req, next);
+    routerConfig(req);
+    res.header('Content-Type', 'multipart/form-data');
+    next();
 });
+
 // 列出磁盘文件
 Router.get(
     '/listDiskFiles',
@@ -40,22 +43,12 @@ Router.get(
 // 文件上传本地磁盘
 Router.post(
     '/saveFileToDisk',
-    // function (req, res, next) {
-    //     jwtUtils.verify(req, res, next);
-    // },
     function (req, res, next) {
-        saveFileToDisk(req, res, next);
+        jwtUtils.verify(req, res, next);
     },
+    saveFileToDisk.single('file'),
     function (req, res) {
-        let filename = req.file.filename;
-        let id = filename.split('-');
-        res.send(
-            successMsgCode({
-                url: '/uploadFile/' + filename,
-                filename: filename,
-                id: `${id[1]}-${id[2]}`,
-            })
-        );
+        res.send(successMsgCode(req.file));
     }
 );
 
@@ -125,12 +118,10 @@ Router.get(
 // 文件上传数据库
 Router.post(
     '/saveFileToDataBase',
-    // function (req, res, next) {
-    //     jwtUtils.verify(req, res, next);
-    // },
     function (req, res, next) {
-        saveFileToDataBase(req, res, next);
+        jwtUtils.verify(req, res, next);
     },
+    saveFileToDataBase.single('file'),
     function (req, res) {
         res.send(successMsgCode({}));
     }
@@ -176,4 +167,5 @@ Router.get(
         res.send(successMsgCode(diskPath));
     }
 );
+
 module.exports = Router;

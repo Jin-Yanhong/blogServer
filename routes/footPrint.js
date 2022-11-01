@@ -4,7 +4,8 @@ const { handleRequest, routerConfig } = require('../utils/index');
 const Router = express.Router();
 
 Router.use(function (req, res, next) {
-    routerConfig(res, req, next);
+    routerConfig(req);
+    next();
 });
 
 // 获取我的足迹

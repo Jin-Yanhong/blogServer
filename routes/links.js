@@ -6,7 +6,8 @@ const { handleRequest, routerConfig } = require('../utils/index');
 const Router = express.Router();
 
 Router.use(function (req, res, next) {
-    routerConfig(res, req, next);
+    routerConfig(req);
+    next();
 });
 
 const bingApi = 'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=10&nc=1612409408851&pid=hp&FORM=BEHPTB&uhd=1&uhdwidth=3840&uhdheight=2160';

@@ -8,7 +8,8 @@ const { successMsgCode } = require('../utils/constant');
 const Router = express.Router();
 
 Router.use(function (req, res, next) {
-    routerConfig(res, req, next);
+    routerConfig(req);
+    next();
 });
 
 // 用户登录

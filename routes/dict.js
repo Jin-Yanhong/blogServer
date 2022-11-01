@@ -5,7 +5,8 @@ const jwtUtils = require('../middleware/jwt');
 const Router = express.Router();
 
 Router.use(function (req, res, next) {
-    routerConfig(res, req, next);
+    routerConfig(req);
+    next();
 });
 // 新增字典
 Router.put(
