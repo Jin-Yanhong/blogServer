@@ -44,7 +44,7 @@ app.use('/api/wx', wxRouter);
 dotenv.config();
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function (req, res) {
     res.status(404).send({
         data: {},
         code: 404,
@@ -67,7 +67,7 @@ Redis.connect()
 */
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
     res.status(err.status || 500).send({
         data: {},
         code: err.status || 500,

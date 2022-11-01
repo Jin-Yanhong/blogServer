@@ -1,9 +1,15 @@
+const express = require('express');
 const jwtUtils = require('../middleware/jwt');
 const { getWorkList, createWork, updateWork, queryWorkById, deleteWork } = require('../controller/work');
-const { centerRouter, handleRequest } = require('../utils/index');
+const { handleRequest, routerConfig } = require('../utils/index');
 
+const Router = express.Router();
+
+Router.use(function (req, res, next) {
+    routerConfig(res, req, next);
+});
 // 新增作品
-centerRouter.put(
+Router.put(
     '/createWork',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -15,7 +21,7 @@ centerRouter.put(
 );
 
 // 删除作品
-centerRouter.delete(
+Router.delete(
     '/deleteWork/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -27,7 +33,7 @@ centerRouter.delete(
 );
 
 // 修改作品
-centerRouter.post(
+Router.post(
     '/updateWork/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -40,15 +46,15 @@ centerRouter.post(
 );
 
 // 获取作品详情
-centerRouter.get('/getWorkDetail/:id', function (req, res) {
+Router.get('/getWorkDetail/:id', function (req, res) {
     let id = req?.params?.id;
     handleRequest(queryWorkById(id), res, { args: { id } });
 });
 
 // 获取作品详情
-centerRouter.get('/getWorkList', function (req, res, next) {
+Router.get('/getWorkList', function (req, res, next) {
     let { pageSize, pageNum } = req.query;
     handleRequest(getWorkList(pageSize, pageNum), res, { args: { pageSize, pageNum } });
 });
 
-module.exports = centerRouter;
+module.exports = Router;

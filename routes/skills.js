@@ -1,9 +1,16 @@
-const { centerRouter, handleRequest } = require('../utils/index');
+const express = require('express');
+const { handleRequest, routerConfig } = require('../utils/index');
 const { getSkillsList, createSkill, updateSkill, deleteSkillById } = require('../controller/skills');
 const jwtUtils = require('../middleware/jwt');
 
+const Router = express.Router();
+
+Router.use(function (req, res, next) {
+    routerConfig(res, req, next);
+});
+
 // 创建技能
-centerRouter.put(
+Router.put(
     '/createSkill',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -15,7 +22,7 @@ centerRouter.put(
 );
 
 // 删除工作技能
-centerRouter.delete(
+Router.delete(
     '/deleteSkill/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -27,7 +34,7 @@ centerRouter.delete(
 );
 
 // 更新技能
-centerRouter.post(
+Router.post(
     '/updateSkill/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -40,9 +47,9 @@ centerRouter.post(
 );
 
 // 获取工作技能列表
-centerRouter.get('/getSkillsList', function (req, res) {
+Router.get('/getSkillsList', function (req, res) {
     let { pageSize, pageNum } = req.query;
     handleRequest(getSkillsList(pageSize, pageNum), res, { args: { pageSize, pageNum } });
 });
 
-module.exports = centerRouter;
+module.exports = Router;

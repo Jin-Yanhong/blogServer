@@ -23,11 +23,11 @@ const jwtUtils = {
         } catch (error) {
             res.send({
                 ...failMsgCode.other,
-                msg: err.message,
+                msg: error.message,
             });
         }
     },
-    verify: (req, res, next) => {
+    verify: function (req, res, next) {
         const jwtSecretKey = publicKey;
 
         const token = req.headers.accesstoken;

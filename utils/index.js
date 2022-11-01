@@ -1,11 +1,9 @@
 // global router
-const express = require('express');
-const Router = express.Router();
+
 const { failMsgCode, successMsgCode } = require('./constant.js');
 const Redis = require('../config/redis');
 
-//  定义中央路由,所有的路由都要经过这个路由
-const centerRouter = Router.use(function (req, res, next) {
+function routerConfig(res, req, next) {
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
@@ -13,19 +11,18 @@ const centerRouter = Router.use(function (req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     res.header('Access-Control-Allow-Headers', 'accesstoken');
     next();
-});
-
+}
 // 所有对数据修改的接口加上校验
-// centerRouter.put('*', function (req, res, next) {
+// Router.put('*', function (req, res, next) {
 // 	jwtUtils.verify(req, res, next);
 // });
 
-// centerRouter.delete('*', function (req, res, next) {
+// Router.delete('*', function (req, res, next) {
 // 	jwtUtils.verify(req, res, next);
 // });
 
 // // 排除登录
-// centerRouter.post('/user/[^login].*', function (req, res, next) {
+// Router.post('/user/[^login].*', function (req, res, next) {
 // 	jwtUtils.verify(req, res, next);
 // });
 
@@ -42,7 +39,7 @@ function handleRequest(taskPromise, response, { args = {}, callback = undefined 
         return;
     }
     try {
-        taskPromise.then(data => {
+        taskPromise.then((data) => {
             if (callback) {
                 callback(data);
             } else {
@@ -70,52 +67,52 @@ const redisFunction = {
  * @param { function } callback 成功回调
  * @param { object } argsObject redis方法所需参数
  */
-function handleRedisFunction(caseKey, callback, { key, value } = argsObject) {
+function handleRedisFunction(caseKey, callback, { key, value }) {
     switch (caseKey) {
         case redisFunction.ping:
             Redis.ping()
-                .then(result => {
+                .then((result) => {
                     callback(result);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(`${caseKey} error`, err);
                 });
             break;
         case redisFunction.get:
             Redis.get(key)
-                .then(result => {
+                .then((result) => {
                     callback(result);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(`${caseKey} error`, err);
                 });
             break;
         case redisFunction.incr:
             Redis.incr(key)
-                .then(result => {
+                .then((result) => {
                     callback(result);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(`${caseKey} error`, err);
                 });
             break;
         case redisFunction.set:
             Redis.set(`${key}`, JSON.stringify(value))
-                .then(result => {
+                .then((result) => {
                     callback(result);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(`${caseKey} error`, err);
                 });
             break;
         default:
-            new Promise((resolve, reject) => {
+            new Promise((resolve) => {
                 resolve({});
             })
-                .then(result => {
+                .then((result) => {
                     callback(result);
                 })
-                .catch(err => {
+                .catch((err) => {
                     console.log(`${caseKey} error`, err);
                 });
             break;
@@ -124,7 +121,7 @@ function handleRedisFunction(caseKey, callback, { key, value } = argsObject) {
 
 // 部分导出错误处理
 module.exports = {
-    centerRouter,
+    routerConfig,
     redisFunction,
     handleRedisFunction,
     handleRequest,

@@ -1,80 +1,179 @@
 const fs = require('fs');
 const path = require('path');
-const { centerRouter, handleRequest } = require('../utils/index');
+const express = require('express');
+const { handleRequest, routerConfig } = require('../utils/index');
 const { successMsgCode, failMsgCode } = require('../utils/constant');
-const saveFileToDisk = require('../middleware/saveFileToDisk');
-const saveFileToDataBase = require('../middleware/saveFileToDataBase');
+const { saveFileToDisk } = require('../middleware/handleDiskFile');
+const { saveFileToDataBase, downloadFileFromDataBase, removeFileFromDataBase } = require('../middleware/handleDataBaseFile');
 const jwtUtils = require('../middleware/jwt');
 
-centerRouter.get('/listDiskFiles', async function (req, res) {
-	const diskPath = path.join(__dirname, '../public/uploadFile');
-	console.log(diskPath);
-	await fs.readdir(diskPath, function (err, files) {
-		try {
-			res.send(
-				successMsgCode({
-					list: files,
-				})
-			);
-		} catch (error) {
-			res.send({
-				...failMsgCode.other,
-				msg: err.message,
-			});
-		}
-	});
-});
+const Router = express.Router();
 
-centerRouter.get('/listDBFiles', async function (req, res) {
-	const diskPath = path.join(__dirname, '../public/uploadFile');
-	console.log(diskPath);
-	await fs.readdir(diskPath, function (err, files) {
-		try {
-			res.send(
-				successMsgCode({
-					list: files,
-				})
-			);
-		} catch (error) {
-			res.send({
-				...failMsgCode.other,
-				msg: err.message,
-			});
-		}
-	});
+Router.use(function (req, res, next) {
+    routerConfig(res, req, next);
 });
-
-// 文件上传
-centerRouter.post(
-	'/saveFileToDisk',
-	function (req, res, next) {
-		jwtUtils.verify(req, res, next);
-	},
-	saveFileToDisk.single('file'),
-	function (req, res) {
-		let filename = req.file.filename;
-		let id = filename.split('-');
-		res.send(
-			successMsgCode({
-				url: '/uploadFile/' + filename,
-				filename: filename,
-				id: `${id[1]}-${id[2]}`,
-			})
-		);
-	}
+// 列出磁盘文件
+Router.get(
+    '/listDiskFiles',
+    function (req, res, next) {
+        jwtUtils.verify(req, res, next);
+    },
+    async function (req, res) {
+        const diskPath = path.join(__dirname, '../public/uploadFile');
+        await fs.readdir(diskPath, function (err, files) {
+            try {
+                res.send(
+                    successMsgCode({
+                        files,
+                    })
+                );
+            } catch (error) {
+                res.send({
+                    ...failMsgCode.other,
+                    msg: err.message,
+                });
+            }
+        });
+    }
 );
 
-// 文件上传
-centerRouter.post(
-	'/saveFileToDataBase',
-	function (req, res, next) {
-		jwtUtils.verify(req, res, next);
-	},
-	saveFileToDataBase.single('file'),
-	function (req, res) {
-		let file = req.file;
-		res.send(successMsgCode(file));
-	}
+// 文件上传本地磁盘
+Router.post(
+    '/saveFileToDisk',
+    // function (req, res, next) {
+    //     jwtUtils.verify(req, res, next);
+    // },
+    function (req, res, next) {
+        saveFileToDisk(req, res, next);
+    },
+    function (req, res) {
+        let filename = req.file.filename;
+        let id = filename.split('-');
+        res.send(
+            successMsgCode({
+                url: '/uploadFile/' + filename,
+                filename: filename,
+                id: `${id[1]}-${id[2]}`,
+            })
+        );
+    }
 );
 
-module.exports = centerRouter;
+// 移除本地磁盘文件
+Router.delete(
+    '/rmDiskFile/:fileNeme',
+    function (req, res, next) {
+        jwtUtils.verify(req, res, next);
+    },
+    async function (req, res) {
+        const fileNeme = decodeURI(req.params.fileNeme);
+        const diskPath = path.join(__dirname, '../public/uploadFile/' + fileNeme);
+        await fs.rm(diskPath, function (err) {
+            try {
+                res.send(successMsgCode('Delete Success'));
+            } catch (error) {
+                res.send({
+                    ...failMsgCode.other,
+                    msg: err.message,
+                });
+            }
+        });
+    }
+);
+
+// 下载指定本地磁盘文件
+Router.get(
+    '/rmDiskFile/:fileNeme',
+    function (req, res, next) {
+        jwtUtils.verify(req, res, next);
+    },
+    async function (req, res) {
+        const fileNeme = decodeURI(req.params.fileNeme);
+        const diskPath = path.join(__dirname, '../public/uploadFile/' + fileNeme);
+        res.send(successMsgCode(diskPath));
+    }
+);
+
+/************************************* DataBase ***************************************/
+
+// 列出所有数据库文件
+Router.get(
+    '/listDBFiles',
+    function (req, res, next) {
+        jwtUtils.verify(req, res, next);
+    },
+    async function (req, res) {
+        const diskPath = path.join(__dirname, '../public/uploadFile');
+        console.log(diskPath);
+        await fs.readdir(diskPath, function (err, files) {
+            try {
+                res.send(
+                    successMsgCode({
+                        files,
+                    })
+                );
+            } catch (error) {
+                res.send({
+                    ...failMsgCode.other,
+                    msg: err.message,
+                });
+            }
+        });
+    }
+);
+
+// 文件上传数据库
+Router.post(
+    '/saveFileToDataBase',
+    // function (req, res, next) {
+    //     jwtUtils.verify(req, res, next);
+    // },
+    function (req, res, next) {
+        saveFileToDataBase(req, res, next);
+    },
+    function (req, res) {
+        res.send(successMsgCode({}));
+    }
+);
+
+// 移除数据库文件
+Router.delete(
+    '/rmDataBaseBFile/:fileNeme',
+    function (req, res, next) {
+        jwtUtils.verify(req, res, next);
+    },
+    function (req, res, next) {
+        removeFileFromDataBase(req, res, next);
+    },
+    async function (req, res) {
+        const fileNeme = decodeURI(req.params.fileNeme);
+        const diskPath = path.join(__dirname, '../public/uploadFile/' + fileNeme);
+        await fs.rm(diskPath, function (err) {
+            try {
+                res.send(successMsgCode('Delete Success'));
+            } catch (error) {
+                res.send({
+                    ...failMsgCode.other,
+                    msg: err.message,
+                });
+            }
+        });
+    }
+);
+
+// 下载指定数据库文件
+Router.get(
+    '/downloadDiskFile/:fileNeme',
+    function (req, res, next) {
+        jwtUtils.verify(req, res, next);
+    },
+    function (req, res, next) {
+        downloadFileFromDataBase(req, res, next);
+    },
+    async function (req, res) {
+        const fileNeme = decodeURI(req.params.fileNeme);
+        const diskPath = path.join(__dirname, '../public/uploadFile/' + fileNeme);
+        res.send(successMsgCode(diskPath));
+    }
+);
+module.exports = Router;

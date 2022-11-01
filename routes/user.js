@@ -1,16 +1,23 @@
-const { centerRouter, handleRequest, handleRedisFunction } = require('../utils/index');
+const express = require('express');
+const { handleRequest, routerConfig, handleRedisFunction } = require('../utils/index');
 const { createUser, deleteUser, updateUser, queryUserById } = require('../controller/user');
 const jwtUtils = require('../middleware/jwt');
 const auth = require('../middleware/userAuth');
 const { successMsgCode } = require('../utils/constant');
 
+const Router = express.Router();
+
+Router.use(function (req, res, next) {
+    routerConfig(res, req, next);
+});
+
 // 用户登录
-centerRouter.post('/login', function (req, res) {
+Router.post('/login', function (req, res) {
     auth.verifyLogin(req, res);
 });
 
 // 新增用户
-centerRouter.put(
+Router.put(
     '/addUser',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -22,24 +29,24 @@ centerRouter.put(
 );
 
 // 删除用户
-centerRouter.delete(
+Router.delete(
     '/deleteUser/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
     },
     function (req, res) {
         let id = req?.params?.id;
-        handleRequest(deleteUser(id, user), res, { args: { id } });
+        handleRequest(deleteUser(id), res, { args: { id } });
     }
 );
 
 // 修改用户
-centerRouter.post(
+Router.post(
     '/updateUser/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
     },
-    function (req, res, next) {
+    function (req, res) {
         let id = req?.params?.id;
         let user = req.body.user;
         handleRequest(updateUser(id, user), res, { args: { id, user } });
@@ -47,7 +54,7 @@ centerRouter.post(
 );
 
 // 用户详情
-centerRouter.get(
+Router.get(
     '/userInfo/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -58,7 +65,7 @@ centerRouter.get(
 );
 
 // 用户注销
-centerRouter.post(
+Router.post(
     '/logout',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -70,4 +77,4 @@ centerRouter.post(
     }
 );
 
-module.exports = centerRouter;
+module.exports = Router;

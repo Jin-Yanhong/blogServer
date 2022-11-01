@@ -2,7 +2,7 @@
     "semi": true,
     "tabWidth": 4,
     "printWidth": 360,
-    "useTabs": false,
+    "useTabs": true,
     "quoteProps": "as-needed",
     "bracketSpacing": true,
     "singleQuote": true,
@@ -15,14 +15,12 @@
             "options": {
                 "semi": true,
                 "tabWidth": 4,
-                "printWidth": 360,
                 "useTabs": false,
-                "quoteProps": "as-needed",
+                "quoteProps": "consistent",
                 "bracketSpacing": true,
                 "singleQuote": true,
                 "bracketSameLine": false,
-                "endOfLine": "crlf",
-                "arrowParens": "avoid"
+                "arrowParens": "always"
             }
         },
         {

@@ -1,8 +1,16 @@
-const { centerRouter, handleRequest } = require('../utils/index');
+const express = require('express');
+const { handleRequest, routerConfig } = require('../utils/index');
 const { queryArticleById, createArticle, getArticleList, updateArticle, deleteArticleById } = require('../controller/article');
 const jwtUtils = require('../middleware/jwt');
+
+const Router = express.Router();
+
+Router.use(function (req, res, next) {
+    routerConfig(res, req, next);
+});
+
 // 新增文章
-centerRouter.put(
+Router.put(
     '/createArticle',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -14,19 +22,19 @@ centerRouter.put(
 );
 
 // 获取文章列表
-centerRouter.get('/getArticleList', function (req, res, next) {
+Router.get('/getArticleList', function (req, res) {
     let { pageSize, pageNum } = req.query;
     handleRequest(getArticleList(pageSize, pageNum), res, { args: { pageSize, pageNum } });
 });
 
 // 查询文章详情
-centerRouter.get('/getArticleContent/:id', function (req, res) {
+Router.get('/getArticleContent/:id', function (req, res) {
     let id = req?.params?.id;
     handleRequest(queryArticleById(id), res, { args: { id } });
 });
 
 // 更新文章
-centerRouter.post(
+Router.post(
     '/updateArticle/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -39,7 +47,7 @@ centerRouter.post(
 );
 
 // 删除文章
-centerRouter.delete(
+Router.delete(
     '/deleteArticle/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -50,4 +58,4 @@ centerRouter.delete(
     }
 );
 
-module.exports = centerRouter;
+module.exports = Router;

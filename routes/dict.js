@@ -1,9 +1,14 @@
-const { centerRouter, handleRequest } = require('../utils/index');
+const express = require('express');
+const { handleRequest, routerConfig } = require('../utils/index');
 const { queryDictById, createDict, getDictList, updateDict, deleteDictById, useDictByKey } = require('../controller/dict');
 const jwtUtils = require('../middleware/jwt');
+const Router = express.Router();
 
+Router.use(function (req, res, next) {
+    routerConfig(res, req, next);
+});
 // 新增字典
-centerRouter.put(
+Router.put(
     '/createDict',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -15,7 +20,7 @@ centerRouter.put(
 );
 
 // 删除字典
-centerRouter.delete(
+Router.delete(
     '/deleteDict/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -29,7 +34,7 @@ centerRouter.delete(
 );
 
 // 更新字典
-centerRouter.post(
+Router.post(
     '/updateDict/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -44,7 +49,7 @@ centerRouter.post(
 );
 
 // 查询字典详情
-centerRouter.get(
+Router.get(
     '/getDictContent/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -57,7 +62,7 @@ centerRouter.get(
     }
 );
 // 获取字典列表
-centerRouter.get(
+Router.get(
     '/getDictList',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
@@ -71,9 +76,9 @@ centerRouter.get(
 );
 
 // 使用字典
-centerRouter.get('/useDict/:key', function (req, res) {
+Router.get('/useDict/:key', function (req, res) {
     let key = req?.params?.key;
     handleRequest(useDictByKey(key), res, { args: { key } });
 });
 
-module.exports = centerRouter;
+module.exports = Router;

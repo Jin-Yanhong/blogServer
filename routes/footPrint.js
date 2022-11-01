@@ -1,9 +1,15 @@
+const express = require('express');
 const { getFootPrintList } = require('../controller/footPrint');
-const { centerRouter, handleRequest } = require('../utils/index');
+const { handleRequest, routerConfig } = require('../utils/index');
+const Router = express.Router();
+
+Router.use(function (req, res, next) {
+    routerConfig(res, req, next);
+});
 
 // 获取我的足迹
-centerRouter.get('/getFootPrintList', function (req, res) {
+Router.get('/getFootPrintList', function (req, res) {
     handleRequest(getFootPrintList(), res);
 });
 
-module.exports = centerRouter;
+module.exports = Router;
