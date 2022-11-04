@@ -26,14 +26,16 @@ const failMsgCode = {
         data: {},
     },
     // 其他错误
-    other: {
-        code: 50010,
-        msg: '其他错误',
-        data: {},
+    other: (errMsg = '其他错误') => {
+        return {
+            code: 50010,
+            msg: errMsg,
+            data: {},
+        };
     },
 };
 
-const successMsgCode = data => {
+const successMsgCode = (data) => {
     return {
         code: 20000,
         msg: 'Success',

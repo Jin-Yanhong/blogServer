@@ -22,7 +22,7 @@ const jwtUtils = {
             return token;
         } catch (error) {
             res.send({
-                ...failMsgCode.other,
+                ...failMsgCode.userNotAuthorized,
                 msg: error.message,
             });
         }

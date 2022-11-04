@@ -3,7 +3,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const Mongoose = require('./config/mongoDB');
+const mongooseIns = require('./config/mongoDB');
 // const Redis = require('./config/redis');
 
 // App routers
@@ -53,7 +53,7 @@ app.use(function (req, res) {
 });
 
 // Handle MongoDB Service Connection
-Mongoose.connect();
+mongooseIns.connect();
 // Handle Redis Service Connection
 
 /* 

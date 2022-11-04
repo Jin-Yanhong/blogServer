@@ -1,10 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const { handleRequest, routerConfig } = require('../utils/index');
+const { routerConfig } = require('../utils/index');
 const { successMsgCode, failMsgCode } = require('../utils/constant');
-const { saveFileToDisk } = require('../middleware/handleDiskFile');
-const { saveFileToDataBase, downloadFileFromDataBase, removeFileFromDataBase } = require('../middleware/handleDataBaseFile');
+const { LocalfilePath } = require('../config/appConfig');
+
+const { saveFileToDisk, getDiskFileInfo, downloadFileFromDisk } = require('../middleware/handleDiskFile');
+const { listDataBaseFiles, saveFileToDataBase, downloadFileFromDataBase, getDBFIleInfo, removeFileFromDataBase } = require('../middleware/handleDataBaseFile');
 const jwtUtils = require('../middleware/jwt');
 
 const Router = express.Router();
@@ -32,7 +34,7 @@ Router.get(
                 );
             } catch (error) {
                 res.send({
-                    ...failMsgCode.other,
+                    ...failMsgCode.other(),
                     msg: err.message,
                 });
             }
@@ -40,7 +42,7 @@ Router.get(
     }
 );
 
-// 文件上传本地磁盘
+// 文件上传至本地
 Router.post(
     '/saveFileToDisk',
     function (req, res, next) {
@@ -52,7 +54,7 @@ Router.post(
     }
 );
 
-// 移除本地磁盘文件
+// 移除本地文件
 Router.delete(
     '/rmDiskFile/:fileNeme',
     function (req, res, next) {
@@ -66,7 +68,7 @@ Router.delete(
                 res.send(successMsgCode('Delete Success'));
             } catch (error) {
                 res.send({
-                    ...failMsgCode.other,
+                    ...failMsgCode.other(),
                     msg: err.message,
                 });
             }
@@ -74,16 +76,34 @@ Router.delete(
     }
 );
 
-// 下载指定本地磁盘文件
+// 下载磁盘文件
 Router.get(
-    '/rmDiskFile/:fileNeme',
+    '/downloadFileFromDisk/:fileNeme',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
     },
+    function (req, res, next) {
+        downloadFileFromDisk(req, res, next);
+    },
     async function (req, res) {
-        const fileNeme = decodeURI(req.params.fileNeme);
-        const diskPath = path.join(__dirname, '../public/uploadFile/' + fileNeme);
-        res.send(successMsgCode(diskPath));
+        const result = res.result;
+        res.download(result);
+    }
+);
+
+// 获取指定磁盘文件信息
+Router.get(
+    '/getDiskFileInfo/:fileNeme',
+    function (req, res, next) {
+        jwtUtils.verify(req, res, next);
+    },
+    function (req, res, next) {
+        getDiskFileInfo(req, res, next);
+    },
+    async function (req, res) {
+        const result = res.result;
+        console.log(result);
+        res.send(successMsgCode(result));
     }
 );
 
@@ -95,23 +115,16 @@ Router.get(
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
     },
+    function (req, res, next) {
+        listDataBaseFiles(req, res, next);
+    },
     async function (req, res) {
-        const diskPath = path.join(__dirname, '../public/uploadFile');
-        console.log(diskPath);
-        await fs.readdir(diskPath, function (err, files) {
-            try {
-                res.send(
-                    successMsgCode({
-                        files,
-                    })
-                );
-            } catch (error) {
-                res.send({
-                    ...failMsgCode.other,
-                    msg: err.message,
-                });
-            }
+        const result = res.result;
+        let temp = [];
+        await result.forEach((doc) => {
+            temp.push(doc);
         });
+        res.send(successMsgCode(temp));
     }
 );
 
@@ -123,38 +136,14 @@ Router.post(
     },
     saveFileToDataBase.single('file'),
     function (req, res) {
+        //TODO: 返回下载链接
         res.send(successMsgCode({}));
-    }
-);
-
-// 移除数据库文件
-Router.delete(
-    '/rmDataBaseBFile/:fileNeme',
-    function (req, res, next) {
-        jwtUtils.verify(req, res, next);
-    },
-    function (req, res, next) {
-        removeFileFromDataBase(req, res, next);
-    },
-    async function (req, res) {
-        const fileNeme = decodeURI(req.params.fileNeme);
-        const diskPath = path.join(__dirname, '../public/uploadFile/' + fileNeme);
-        await fs.rm(diskPath, function (err) {
-            try {
-                res.send(successMsgCode('Delete Success'));
-            } catch (error) {
-                res.send({
-                    ...failMsgCode.other,
-                    msg: err.message,
-                });
-            }
-        });
     }
 );
 
 // 下载指定数据库文件
 Router.get(
-    '/downloadDiskFile/:fileNeme',
+    '/downloadFileFromDB/:fileNeme',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
     },
@@ -162,9 +151,46 @@ Router.get(
         downloadFileFromDataBase(req, res, next);
     },
     async function (req, res) {
+        // const result = res.result;
         const fileNeme = decodeURI(req.params.fileNeme);
-        const diskPath = path.join(__dirname, '../public/uploadFile/' + fileNeme);
-        res.send(successMsgCode(diskPath));
+        const url = `http://localhost:3000/uploadFile/${fileNeme}`;
+        res.send(successMsgCode(url));
+        // TODO:删除缓存
+        // await fs.rmdir(`${filePath}\\${fileNeme}`, function (err) {
+        //     if (err) {
+        //         console.log('tempFile remove Error');
+        //     }
+        // });
+    }
+);
+
+// 获取数据库文件详情
+Router.get(
+    '/getDBFileInfo/:fileNeme',
+    function (req, res, next) {
+        jwtUtils.verify(req, res, next);
+    },
+    function (req, res, next) {
+        getDBFIleInfo(req, res, next);
+    },
+    async function (req, res) {
+        const result = res.result;
+        res.send(successMsgCode(result));
+    }
+);
+
+// 移除数据库文件
+Router.delete(
+    '/rmDBFile/:fileNeme',
+    function (req, res, next) {
+        jwtUtils.verify(req, res, next);
+    },
+    function (req, res, next) {
+        removeFileFromDataBase(req, res, next);
+    },
+    async function (req, res) {
+        const result = res.result;
+        res.send(successMsgCode(result));
     }
 );
 
