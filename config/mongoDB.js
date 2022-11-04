@@ -9,6 +9,7 @@ const mongooseIns = {
                 console.log('Database connection failed');
                 return;
             }
+            console.log('Database connection succeeded');
         });
     },
 };

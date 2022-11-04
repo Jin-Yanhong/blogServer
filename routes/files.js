@@ -1,19 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const { routerConfig } = require('../utils/index');
-const { successMsgCode, failMsgCode } = require('../utils/constant');
-const { LocalfilePath } = require('../config/appConfig');
-
-const { saveFileToDisk, getDiskFileInfo, downloadFileFromDisk } = require('../middleware/handleDiskFile');
-const { listDataBaseFiles, saveFileToDataBase, downloadFileFromDataBase, getDBFIleInfo, removeFileFromDataBase } = require('../middleware/handleDataBaseFile');
 const jwtUtils = require('../middleware/jwt');
+const { routerConfig } = require('../utils/index');
+const { LocalfilePath } = require('../config/appConfig');
+const { successMsgCode, failMsgCode } = require('../utils/constant');
+const { saveFileToDisk, getDiskFileInfo, downloadFileFromDisk } = require('../middleware/handleDiskFile');
+const { listDataBaseFiles, saveFileToDataBase, downloadFileFromDataBase, getDataBaseFileInfo, removeFileFromDataBase } = require('../middleware/handleDataBaseFile');
 
 const Router = express.Router();
 
 Router.use(function (req, res, next) {
     routerConfig(req);
-    res.header('Content-Type', 'multipart/form-data');
     next();
 });
 
@@ -33,10 +31,7 @@ Router.get(
                     })
                 );
             } catch (error) {
-                res.send({
-                    ...failMsgCode.other(),
-                    msg: err.message,
-                });
+                res.send(failMsgCode.other(err.message));
             }
         });
     }
@@ -56,21 +51,25 @@ Router.post(
 
 // 移除本地文件
 Router.delete(
-    '/rmDiskFile/:fileNeme',
+    '/removemDiskFile/:fileNeme',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
     },
     async function (req, res) {
         const fileNeme = decodeURI(req.params.fileNeme);
-        const diskPath = path.join(__dirname, '../public/uploadFile/' + fileNeme);
-        await fs.rm(diskPath, function (err) {
-            try {
-                res.send(successMsgCode('Delete Success'));
-            } catch (error) {
-                res.send({
-                    ...failMsgCode.other(),
-                    msg: err.message,
+        const diskPath = path.join(__dirname, `../${LocalfilePath}/${fileNeme}`);
+        await fs.stat(diskPath, async function (err, stats) {
+            if (stats) {
+                await fs.rm(diskPath, function (err) {
+                    try {
+                        res.send(successMsgCode('Delete Success'));
+                    } catch (error) {
+                        res.send(failMsgCode.other(err.message));
+                    }
                 });
+            } else {
+                res.send(failMsgCode.other(err.message));
+                return;
             }
         });
     }
@@ -166,12 +165,12 @@ Router.get(
 
 // 获取数据库文件详情
 Router.get(
-    '/getDBFileInfo/:fileNeme',
+    '/getDataBaseFileInfo/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
     },
     function (req, res, next) {
-        getDBFIleInfo(req, res, next);
+        getDataBaseFileInfo(req, res, next);
     },
     async function (req, res) {
         const result = res.result;
@@ -181,7 +180,7 @@ Router.get(
 
 // 移除数据库文件
 Router.delete(
-    '/rmDBFile/:fileNeme',
+    '/removeFileFromDataBase/:id',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
     },

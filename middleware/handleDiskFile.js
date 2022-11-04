@@ -9,6 +9,7 @@ const storage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, LocalfilePath);
     },
+
     filename: function (req, file, callback) {
         callback(null, Date.now() + '_' + file.originalname);
     },

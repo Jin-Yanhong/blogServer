@@ -21,10 +21,7 @@ const jwtUtils = {
             });
             return token;
         } catch (error) {
-            res.send({
-                ...failMsgCode.userNotAuthorized,
-                msg: error.message,
-            });
+            res.send(failMsgCode.userNotAuthorized);
         }
     },
     verify: function (req, res, next) {
@@ -41,14 +38,10 @@ const jwtUtils = {
                 });
                 next();
             } catch (err) {
-                res.send({
-                    ...failMsgCode.userNotAuthorized,
-                });
+                res.send(failMsgCode.userNotAuthorized);
             }
         } else {
-            res.send({
-                ...failMsgCode.userNotAuthorized,
-            });
+            res.send(failMsgCode.userNotAuthorized);
         }
     },
 };

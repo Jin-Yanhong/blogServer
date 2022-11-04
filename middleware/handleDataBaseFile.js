@@ -5,15 +5,16 @@ const mongoose = require('mongoose');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const multer = require('multer');
 const { MongoDBServer, LocalfilePath } = require('../config/appConfig');
-const { successMsgCode, failMsgCode } = require('../utils/constant');
+const { failMsgCode } = require('../utils/constant');
 const URL = `mongodb://${MongoDBServer.host}:${MongoDBServer.port}/${MongoDBServer.db}`;
+const { ObjectId } = mongoose.Types;
 
 let bucket;
 
 mongoose.connect(URL, (err, connect) => {
     const db = connect.db;
     bucket = new mongoose.mongo.GridFSBucket(db, {
-        // bucketName: 'Uploads',
+        bucketName: 'Uploads',
         ChunkSizeBytes: 1048576, // 1MB => default value of 261120 (255kB).
     });
 });
@@ -23,10 +24,10 @@ const storage = new GridFsStorage({
     url: URL,
     file: (req, file) => {
         const timestamp = Date.now();
+        file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
         let fileStoreObj = {
             filename: timestamp + '_' + file.originalname,
-            id: file.originalname + '_' + timestamp,
-            // bucketName: 'Uploads',
+            bucketName: 'Uploads',
             uploadDate: timestamp,
         };
         return fileStoreObj;
@@ -52,10 +53,52 @@ const downloadFileFromDataBase = async (req, res, next) => {
     next();
 };
 
-// 获取数据库文件
-const getDBFIleInfo = async (req, res, next) => {};
+// 获取数据库文件信息
+const getDataBaseFileInfo = async (req, res, next) => {
+    const id = req.params.id;
+
+    if (id.length !== 24) {
+        res.send(failMsgCode.params);
+        return;
+    }
+
+    let result = [];
+
+    await bucket.find({ _id: ObjectId(id) }).forEach((doc) => {
+        result.push(doc);
+    });
+
+    if (result.length > 0) {
+        res.result = result;
+        next();
+    } else {
+        res.send(failMsgCode.fileDoesNotExist);
+    }
+};
 
 // 删除数据库文件
-const removeFileFromDataBase = async (req, res, next) => {};
+const removeFileFromDataBase = async (req, res, next) => {
+    const id = req.params.id;
 
-module.exports = { listDataBaseFiles, saveFileToDataBase, downloadFileFromDataBase, getDBFIleInfo, removeFileFromDataBase };
+    if (id.length !== 24) {
+        res.send(failMsgCode.params);
+        return;
+    }
+
+    let result;
+    let temp = [];
+
+    await bucket.find({ _id: ObjectId(id) }).forEach((doc) => {
+        temp.push(doc);
+    });
+
+    if (temp.length > 0) {
+        result = await bucket.delete(ObjectId(id));
+        res.result = result;
+        next();
+    } else {
+        res.send(failMsgCode.fileDoesNotExist);
+    }
+};
+
+module.exports = { listDataBaseFiles, saveFileToDataBase, downloadFileFromDataBase, getDataBaseFileInfo, removeFileFromDataBase };

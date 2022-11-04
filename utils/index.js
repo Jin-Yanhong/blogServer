@@ -17,9 +17,7 @@ const routerConfig = (res) => {
  */
 function handleRequest(taskPromise, response, { args = {}, callback = undefined } = {}) {
     if (args === undefined || args === null) {
-        response.send({
-            ...failMsgCode.params,
-        });
+        response.send(failMsgCode.params);
         return;
     }
     try {
@@ -31,10 +29,7 @@ function handleRequest(taskPromise, response, { args = {}, callback = undefined 
             }
         });
     } catch (err) {
-        response.send({
-            ...failMsgCode.queryError,
-            msg: failMsgCode.queryError.msg + err.message,
-        });
+        response.send(failMsgCode.other(err.message));
     }
 }
 
