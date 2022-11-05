@@ -22,14 +22,17 @@ Router.get(
         jwtUtils.verify(req, res, next);
     },
     async function (req, res) {
-        const diskPath = path.join(__dirname, '../public/uploadFile');
-        await fs.readdir(diskPath, function (err, files) {
+        const diskPath = path.join(__dirname, `../${LocalfilePath}`);
+        await fs.readdir(diskPath, async function (err, files) {
             try {
-                res.send(
-                    successMsgCode({
-                        files,
-                    })
-                );
+                let result = [];
+                await files.forEach((file, index) => {
+                    result.push({
+                        fileName: file,
+                        index: index + 1,
+                    });
+                });
+                res.send(successMsgCode(result));
             } catch (error) {
                 res.send(failMsgCode.other(err.message));
             }
@@ -62,7 +65,7 @@ Router.delete(
             if (stats) {
                 await fs.rm(diskPath, function (err) {
                     try {
-                        res.send(successMsgCode('Delete Success'));
+                        res.send(successMsgCode());
                     } catch (error) {
                         res.send(failMsgCode.other(err.message));
                     }
@@ -101,12 +104,9 @@ Router.get(
     },
     async function (req, res) {
         const result = res.result;
-        console.log(result);
         res.send(successMsgCode(result));
     }
 );
-
-/************************************* DataBase ***************************************/
 
 // 列出所有数据库文件
 Router.get(
@@ -136,7 +136,7 @@ Router.post(
     saveFileToDataBase.single('file'),
     function (req, res) {
         //TODO: 返回下载链接
-        res.send(successMsgCode({}));
+        res.send(successMsgCode());
     }
 );
 
@@ -150,16 +150,9 @@ Router.get(
         downloadFileFromDataBase(req, res, next);
     },
     async function (req, res) {
-        // const result = res.result;
         const fileNeme = decodeURI(req.params.fileNeme);
         const url = `http://localhost:3000/uploadFile/${fileNeme}`;
         res.send(successMsgCode(url));
-        // TODO:删除缓存
-        // await fs.rmdir(`${filePath}\\${fileNeme}`, function (err) {
-        //     if (err) {
-        //         console.log('tempFile remove Error');
-        //     }
-        // });
     }
 );
 

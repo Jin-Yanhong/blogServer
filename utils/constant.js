@@ -40,7 +40,7 @@ const failMsgCode = {
     },
 };
 
-const successMsgCode = (data) => {
+const successMsgCode = (data = {}) => {
     return {
         code: 20000,
         msg: 'Success',

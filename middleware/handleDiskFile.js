@@ -7,7 +7,8 @@ const { failMsgCode } = require('../utils/constant');
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, LocalfilePath);
+        const filePath = path.join(__dirname, `../${LocalfilePath}`);
+        callback(null, filePath);
     },
 
     filename: function (req, file, callback) {
@@ -26,7 +27,7 @@ const downloadFileFromDisk = (req, res, next) => {
             res.result = `${filePath}\\${fileName}`;
             next();
         } else {
-            res.send(failMsgCode.other('The file does not exist'));
+            res.send(failMsgCode.fileDoesNotExist);
         }
     });
 };
@@ -37,10 +38,15 @@ const getDiskFileInfo = (req, res, next) => {
     const filePath = path.join(__dirname, `../${LocalfilePath}`);
     fs.stat(`${filePath}\\${fileName}`, function (err, stats) {
         if (stats) {
-            res.result = stats;
+            res.result = {
+                fileName: fileName,
+                createTime: stats.birthtime,
+                modifiedTime: stats.mtime,
+                size: stats.size,
+            };
             next();
         } else {
-            res.send(failMsgCode.other('The file does not exist'));
+            res.send(failMsgCode.fileDoesNotExist);
         }
     });
 };

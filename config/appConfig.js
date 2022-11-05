@@ -14,7 +14,8 @@ const WxMiniApp = {
     AppSecret: 'bd01d5970dba80caca26f52433682434',
 };
 
-const LocalfilePath = './public/uploadFile';
+const LocalfilePath = '/public/uploadFile';
+
 module.exports = {
     RedisServer,
     MongoDBServer,
