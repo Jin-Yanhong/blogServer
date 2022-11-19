@@ -6,7 +6,7 @@ const jwtUtils = require('../middleware/jwt');
 const Router = express.Router();
 
 Router.use(function (req, res, next) {
-    routerConfig(req);
+    routerConfig(res);
     next();
 });
 

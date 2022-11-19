@@ -10,7 +10,7 @@ const getPhoneNumber = 'https://api.weixin.qq.com/wxa/business/getuserphonenumbe
 const accessTokenUrl = 'https://api.weixin.qq.com/cgi-bin/token';
 
 Router.use(function (req, res, next) {
-    routerConfig(req);
+    routerConfig(res);
     next();
 });
 

@@ -4,7 +4,7 @@ const { handleRequest, routerConfig } = require('../utils/index');
 const Router = express.Router();
 
 Router.use(function (req, res, next) {
-    routerConfig(req);
+    routerConfig(res);
     next();
 });
 

@@ -6,7 +6,7 @@ const { getSystemConfigList, updateSystemConfig } = require('../controller/syste
 const Router = express.Router();
 
 Router.use(function (req, res, next) {
-    routerConfig(req);
+    routerConfig(res);
     next();
 });
 
