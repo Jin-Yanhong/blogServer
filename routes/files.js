@@ -150,9 +150,14 @@ Router.get(
         downloadFileFromDataBase(req, res, next);
     },
     async function (req, res) {
-        const fileNeme = decodeURI(req.params.fileNeme);
-        const url = `http://localhost:3000/uploadFile/${fileNeme}`;
-        res.send(successMsgCode(url));
+        const result = res.result;
+        if (result) {
+            const fileNeme = decodeURI(req.params.fileNeme);
+            const url = `http://localhost:3000/uploadFile/${fileNeme}`;
+            res.send(successMsgCode(url));
+        } else {
+            res.send(failMsgCode.fileDoesNotExist);
+        }
     }
 );
 

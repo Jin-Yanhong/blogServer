@@ -1,11 +1,11 @@
 // receive file to `DataBase`
 const fs = require('fs');
 const path = require('path');
+const multer = require('multer');
 const mongoose = require('mongoose');
 const { GridFsStorage } = require('multer-gridfs-storage');
-const multer = require('multer');
+const { successMsgCode, failMsgCode } = require('../utils/constant');
 const { MongoDBServer, LocalfilePath } = require('../config/appConfig');
-const { failMsgCode } = require('../utils/constant');
 const URL = `mongodb://${MongoDBServer.host}:${MongoDBServer.port}/${MongoDBServer.db}`;
 const { ObjectId } = mongoose.Types;
 
@@ -48,8 +48,22 @@ const saveFileToDataBase = multer({ storage });
 const downloadFileFromDataBase = async (req, res, next) => {
     const fileName = req.params.fileNeme;
     const filePath = path.join(__dirname, `../${LocalfilePath}`);
-    let result = await bucket.openDownloadStreamByName(fileName).pipe(fs.createWriteStream(`${filePath}\\${fileName}`));
+    let temp = [];
+    await bucket.find({}).forEach((doc) => {
+        temp.push(doc);
+    });
+
+    const isExit =
+        temp.filter(function (file) {
+            return file.filename === fileName;
+        }).length >= 1;
+
+    let result = undefined;
+
+    result = isExit ? await bucket.openDownloadStreamByName(fileName).pipe(fs.createWriteStream(`${filePath}\\${fileName}`)) : null;
+
     res.result = result;
+
     next();
 };
 
