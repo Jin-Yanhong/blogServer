@@ -46,7 +46,7 @@ const saveFileToDataBase = multer({ storage });
 
 // 下载数据库文件
 const downloadFileFromDataBase = async (req, res, next) => {
-    const fileName = req.params.fileNeme;
+    const fileName = decodeURI(req.params.fileName);
     const filePath = path.join(__dirname, `../${LocalfilePath}`);
     let temp = [];
     await bucket.find({}).forEach((doc) => {

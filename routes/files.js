@@ -142,7 +142,7 @@ Router.post(
 
 // 下载指定数据库文件
 Router.get(
-    '/downloadFileFromDB/:fileNeme',
+    '/downloadFileFromDB/:fileName',
     function (req, res, next) {
         jwtUtils.verify(req, res, next);
     },
@@ -152,8 +152,8 @@ Router.get(
     async function (req, res) {
         const result = res.result;
         if (result) {
-            const fileNeme = decodeURI(req.params.fileNeme);
-            const url = `http://localhost:3000/uploadFile/${fileNeme}`;
+            const fileName = decodeURI(req.params.fileName);
+            const url = `http://localhost:3000/uploadFile/${fileName}`;
             res.send(successMsgCode(url));
         } else {
             res.send(failMsgCode.fileDoesNotExist);
