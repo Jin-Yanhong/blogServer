@@ -11,7 +11,7 @@ Router.use(function (req, res, next) {
 });
 
 // 获取系统配置
-Router.post('/getSystemConfig', function (req, res) {
+Router.get('/getSystemConfig', function (req, res) {
     let condition = req.body;
     handleRequest(getSystemConfigList(condition), res, { args: { condition } });
 });
