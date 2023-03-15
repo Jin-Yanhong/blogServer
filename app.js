@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
@@ -19,6 +20,17 @@ const filesRouter = require('./routes/files');
 const wxRouter = require('./routes/wx');
 
 const app = express();
+
+app.set('trust proxy', 1); // trust first proxy
+app.use(
+    session({
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: true },
+    })
+);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
