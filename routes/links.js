@@ -25,4 +25,63 @@ Router.get('/bingWallpaper', function (req, res) {
     handleRequest(request, res);
 });
 
+Router.get('/getOuterLinks', function (req, res) {
+    let data = {
+        thanks: [
+            {
+                link: 'https://unsplash.com/',
+                name: 'Unsplash',
+            },
+            {
+                link: 'https://flatuicolors.com/',
+                name: 'Flatuicolors',
+            },
+            {
+                link: 'https://burst.shopify.com/',
+                name: 'Shopify',
+            },
+            {
+                link: 'https://cn.bing.com/',
+                name: 'Bing',
+            },
+            {
+                link: 'https://unsplash.com/',
+                name: 'Unsplash',
+            },
+            {
+                link: 'https://flatuicolors.com/',
+                name: 'Flatuicolors',
+            },
+            {
+                link: 'https://burst.shopify.com/',
+                name: 'Shopify',
+            },
+            {
+                link: 'https://cn.bing.com/',
+                name: 'Bing',
+            },
+        ],
+        tools: [
+            {
+                link: 'https://unsplash.com/',
+                name: 'Unsplash',
+            },
+            {
+                link: 'https://flatuicolors.com/',
+                name: 'Flatuicolors',
+            },
+            {
+                link: 'https://burst.shopify.com/',
+                name: 'Shopify',
+            },
+            {
+                link: 'https://cn.bing.com/',
+                name: 'Bing',
+            },
+        ],
+    };
+    res.send(successMsgCode(data));
+});
+
 module.exports = Router;
+
