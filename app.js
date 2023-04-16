@@ -1,19 +1,19 @@
-var express = require('express');
-var path = require('path');
-var dotenv = require('dotenv');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var mongooseIns = require('./config/mongoDB');
-// var Redis = require('./config/redis');
+const express = require('express');
+const path = require('path');
+const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const mongooseIns = require('./config/mongoDB');
+// const Redis = require('./config/redis');
 
 // App routers
-var sysAuth = require('./routes/sys_auth');
-var sysConfig = require('./routes/sys_config');
-var sysDict = require('./routes/sys_dict');
-var sysFiles = require('./routes/sys_files');
-var sysUser = require('./routes/sys_user');
+const sysAuth = require('./routes/sys_auth');
+const sysConfig = require('./routes/sys_config');
+const sysDict = require('./routes/sys_dict');
+const sysFiles = require('./routes/sys_files');
+const sysUser = require('./routes/sys_user');
 
-var app = express();
+const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
