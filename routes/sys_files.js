@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const jwtUtils = require('../middleware/jwt');
-const { routerConfig } = require('../utils/index');
+const auth = require('../middleware/userAuth');
+const { routerConfig } = require('../utils/httpUtils');
 const { LocalfilePath } = require('../config/appConfig');
 const { successMsgCode, failMsgCode } = require('../utils/constant');
 const { saveFileToDisk, getDiskFileInfo, downloadFileFromDisk } = require('../middleware/handleDiskFile');
@@ -17,15 +17,15 @@ Router.use(function (req, res, next) {
 
 // 列出磁盘文件
 Router.get(
-    '/listDiskFiles',
+    '/localFiles',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     async function (req, res) {
         const diskPath = path.join(__dirname, `../${LocalfilePath}`);
         await fs.readdir(diskPath, async function (err, files) {
             try {
-                let result = [];
+                const result = [];
                 await files.forEach((file, index) => {
                     result.push({
                         fileName: file,
@@ -42,9 +42,9 @@ Router.get(
 
 // 文件上传至本地
 Router.post(
-    '/saveFileToDisk',
+    '/localFiles',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     saveFileToDisk.single('file'),
     function (req, res) {
@@ -54,9 +54,9 @@ Router.post(
 
 // 移除本地文件
 Router.delete(
-    '/removemDiskFile/:fileNeme',
+    '/localFiles/:fileNeme',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     async function (req, res) {
         const fileNeme = decodeURI(req.params.fileNeme);
@@ -80,9 +80,9 @@ Router.delete(
 
 // 下载磁盘文件
 Router.get(
-    '/downloadFileFromDisk/:fileNeme',
+    '/localFiles/:fileNeme',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res, next) {
         downloadFileFromDisk(req, res, next);
@@ -95,9 +95,9 @@ Router.get(
 
 // 获取指定磁盘文件信息
 Router.get(
-    '/getDiskFileInfo/:fileNeme',
+    '/localFiles/info/:fileNeme',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res, next) {
         getDiskFileInfo(req, res, next);
@@ -110,16 +110,16 @@ Router.get(
 
 // 列出所有数据库文件
 Router.get(
-    '/listDBFiles',
+    '/databaseFile',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res, next) {
         listDataBaseFiles(req, res, next);
     },
     async function (req, res) {
         const result = res.result;
-        let temp = [];
+        const temp = [];
         await result.forEach((doc) => {
             temp.push(doc);
         });
@@ -129,9 +129,9 @@ Router.get(
 
 // 文件上传数据库
 Router.post(
-    '/saveFileToDataBase',
+    '/databaseFile',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     saveFileToDataBase.single('file'),
     function (req, res) {
@@ -142,9 +142,9 @@ Router.post(
 
 // 下载指定数据库文件
 Router.get(
-    '/downloadFileFromDB/:fileName',
+    '/databaseFile/:fileName',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res, next) {
         downloadFileFromDataBase(req, res, next);
@@ -163,9 +163,9 @@ Router.get(
 
 // 获取数据库文件详情
 Router.get(
-    '/getDataBaseFileInfo/:id',
+    '/databaseFile/:id',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res, next) {
         getDataBaseFileInfo(req, res, next);
@@ -178,9 +178,9 @@ Router.get(
 
 // 移除数据库文件
 Router.delete(
-    '/removeFileFromDataBase/:id',
+    '/databaseFile/:id',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res, next) {
         removeFileFromDataBase(req, res, next);

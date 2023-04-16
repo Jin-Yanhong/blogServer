@@ -1,6 +1,6 @@
-const { createClient } = require('redis');
-const { RedisServer } = require('./appConfig');
-const Redis = createClient({
+var { createClient } = require('redis');
+var { RedisServer } = require('./appConfig');
+var Redis = createClient({
     socket: {
         host: RedisServer.host,
         port: RedisServer.port,
@@ -9,13 +9,13 @@ const Redis = createClient({
 /* 
 // Redis usage example 
 
-const { redisFunction, handleRedisFunction } = require('../utils/index');
+var { redisFunction, handleRedisFunction } = require('../utils/index');
 
 handleRedisFunction(
 	redisFunction.get,
 	function (result) {
 		if (result) {
-			let config = JSON.parse(result);
+			var config = JSON.parse(result);
 			res.send({
 				msg: 'success',
 				code: 200,

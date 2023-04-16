@@ -1,11 +1,14 @@
-const fs = require('fs');
-const path = require('path');
-const CryptoJS = require('crypto-js');
+var fs = require('fs');
+var path = require('path');
+var CryptoJS = require('crypto-js');
 
-const CryptoJsUtils = {
-    encode: data => {
-        const hash = CryptoJS.MD5(data).words;
+var CryptoJsUtils = {
+    encode: (data) => {
+        var hash = CryptoJS.MD5(data).words;
         return hash;
+    },
+    decode: (data) => {
+        //
     },
 };
 

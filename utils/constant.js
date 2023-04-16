@@ -1,5 +1,5 @@
 // 错误类型
-const failMsgCode = {
+var failMsgCode = {
     params: {
         code: 50001,
         msg: 'Parameters you passed in is not correct.',
@@ -40,7 +40,7 @@ const failMsgCode = {
     },
 };
 
-const successMsgCode = (data = {}) => {
+var successMsgCode = (data = {}) => {
     return {
         code: 20000,
         msg: 'Success',

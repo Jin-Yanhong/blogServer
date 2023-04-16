@@ -1,24 +1,19 @@
-const express = require('express');
-const path = require('path');
-const dotenv = require('dotenv');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const mongooseIns = require('./config/mongoDB');
-// const Redis = require('./config/redis');
+var express = require('express');
+var path = require('path');
+var dotenv = require('dotenv');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var mongooseIns = require('./config/mongoDB');
+// var Redis = require('./config/redis');
 
 // App routers
-const articleRouter = require('./routes/article');
-const dictRouter = require('./routes/dict');
-const footPrintRouter = require('./routes/footPrint');
-const skillsRouter = require('./routes/skills');
-const linksRouter = require('./routes/links');
-const workRouter = require('./routes/work');
-const systemRouter = require('./routes/system');
-const userRouter = require('./routes/user');
-const filesRouter = require('./routes/files');
-const wxRouter = require('./routes/wx');
+var sysAuth = require('./routes/sys_auth');
+var sysConfig = require('./routes/sys_config');
+var sysDict = require('./routes/sys_dict');
+var sysFiles = require('./routes/sys_files');
+var sysUser = require('./routes/sys_user');
 
-const app = express();
+var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -30,16 +25,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // when it is visited ,use the flowing router
-app.use('/api/article', articleRouter);
-app.use('/api/dict', dictRouter);
-app.use('/api/footPrint', footPrintRouter);
-app.use('/api/skills', skillsRouter);
-app.use('/api/links', linksRouter);
-app.use('/api/work', workRouter);
-app.use('/api/system', systemRouter);
-app.use('/api/user', userRouter);
-app.use('/api/files', filesRouter);
-app.use('/api/wx', wxRouter);
+app.use('/api/auth', sysAuth);
+app.use('/api/sys', sysConfig);
+app.use('/api/sys', sysDict);
+app.use('/api/sys', sysFiles);
+app.use('/api/sys', sysUser);
 
 dotenv.config();
 
@@ -48,7 +38,11 @@ app.use(function (req, res) {
     res.status(404).send({
         data: {},
         code: 404,
-        message: 'Are you sure that the path ** ' + req.url + ' ** is exist ?',
+        message: {
+            url: req.url,
+            method: req.method,
+            result: 'No path matched this request',
+        },
     });
 });
 
@@ -76,3 +70,4 @@ app.use(function (err, req, res) {
 });
 
 module.exports = app;
+

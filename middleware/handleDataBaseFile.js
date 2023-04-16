@@ -25,7 +25,7 @@ const storage = new GridFsStorage({
     file: (req, file) => {
         const timestamp = Date.now();
         file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8');
-        let fileStoreObj = {
+        const fileStoreObj = {
             filename: timestamp + '_' + file.originalname,
             bucketName: 'Uploads',
             uploadDate: timestamp,
@@ -36,7 +36,7 @@ const storage = new GridFsStorage({
 
 // 列出数据库文件
 const listDataBaseFiles = async (req, res, next) => {
-    let result = await bucket.find({});
+    const result = await bucket.find({});
     res.result = result;
     next();
 };
@@ -48,7 +48,7 @@ const saveFileToDataBase = multer({ storage });
 const downloadFileFromDataBase = async (req, res, next) => {
     const fileName = decodeURI(req.params.fileName);
     const filePath = path.join(__dirname, `../${LocalfilePath}`);
-    let temp = [];
+    const temp = [];
     await bucket.find({}).forEach((doc) => {
         temp.push(doc);
     });
@@ -58,7 +58,7 @@ const downloadFileFromDataBase = async (req, res, next) => {
             return file.filename === fileName;
         }).length >= 1;
 
-    let result = undefined;
+    const result = undefined;
 
     result = isExit ? await bucket.openDownloadStreamByName(fileName).pipe(fs.createWriteStream(`${filePath}\\${fileName}`)) : null;
 
@@ -76,7 +76,7 @@ const getDataBaseFileInfo = async (req, res, next) => {
         return;
     }
 
-    let result = [];
+    const result = [];
 
     await bucket.find({ _id: ObjectId(id) }).forEach((doc) => {
         result.push(doc);
@@ -100,7 +100,7 @@ const removeFileFromDataBase = async (req, res, next) => {
     }
 
     let result;
-    let temp = [];
+    const temp = [];
 
     await bucket.find({ _id: ObjectId(id) }).forEach((doc) => {
         temp.push(doc);
@@ -115,4 +115,4 @@ const removeFileFromDataBase = async (req, res, next) => {
     }
 };
 
-module.exports = { listDataBaseFiles, saveFileToDataBase, downloadFileFromDataBase, getDataBaseFileInfo, removeFileFromDataBase };
+module.exports = { saveFileToDataBase, listDataBaseFiles, downloadFileFromDataBase, getDataBaseFileInfo, removeFileFromDataBase };

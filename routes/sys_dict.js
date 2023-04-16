@@ -1,33 +1,34 @@
 const express = require('express');
-const { handleRequest, routerConfig } = require('../utils/index');
-const { queryDictById, createDict, getDictList, updateDict, deleteDictById, useDictByKey } = require('../controller/dict');
-const jwtUtils = require('../middleware/jwt');
+const { handleRequest, routerConfig } = require('../utils/httpUtils');
+const { queryDictById, createDict, getDictList, updateDict, deleteDictById, useDictByKey } = require('../controller/sys_dict.js');
+const auth = require('../middleware/userAuth');
 const Router = express.Router();
 
 Router.use(function (req, res, next) {
     routerConfig(res);
     next();
 });
+
 // 新增字典
 Router.put(
-    '/createDict',
+    '/dict',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res) {
-        let { dict } = req.body;
+        const { dict } = req.body;
         handleRequest(createDict(dict), res, { dict });
     }
 );
 
 // 删除字典
 Router.delete(
-    '/deleteDict/:id',
+    '/dict/:id',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res) {
-        let id = req?.params?.id;
+        var id = req?.params?.id;
         if (id) {
             handleRequest(deleteDictById(id), res);
         }
@@ -36,13 +37,13 @@ Router.delete(
 
 // 更新字典
 Router.post(
-    '/updateDict/:id',
+    '/dict/:id',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res) {
-        let { id } = req.params;
-        let { dict } = req.body;
+        var { id } = req.params;
+        var { dict } = req.body;
         handleRequest(updateDict(id, dict), res, {
             args: { id, dict },
         });
@@ -51,12 +52,12 @@ Router.post(
 
 // 查询字典详情
 Router.get(
-    '/getDictContent/:id',
+    '/dict/:id',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res) {
-        let id = req?.params?.id;
+        var id = req?.params?.id;
         handleRequest(queryDictById(id), res, {
             args: { id },
         });
@@ -64,12 +65,12 @@ Router.get(
 );
 // 获取字典列表
 Router.get(
-    '/getDictList',
+    '/dict',
     function (req, res, next) {
-        jwtUtils.verify(req, res, next);
+        auth.verifyToken(req, res, next);
     },
     function (req, res) {
-        let { pageSize, pageNum } = req.query;
+        var { pageSize, pageNum } = req.query;
         handleRequest(getDictList(pageSize, pageNum), res, {
             args: { pageSize, pageNum },
         });
@@ -78,8 +79,9 @@ Router.get(
 
 // 使用字典
 Router.get('/useDict/:key', function (req, res) {
-    let key = req?.params?.key;
+    var key = req?.params?.key;
     handleRequest(useDictByKey(key), res, { args: { key } });
 });
 
 module.exports = Router;
+
