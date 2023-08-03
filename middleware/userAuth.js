@@ -5,19 +5,20 @@ const CryptoJsUtils = require('../utils/crypto');
 
 const auth = {
     verifyLogin: async (req, res, next) => {
-        const { password, user_name } = req.body;
-        if (!password || !user_name) {
+        const { passWord, userName } = req.body;
+        if (!passWord || !userName) {
             res.send(failMsgCode.params);
             return;
         }
-        const result = await getUserList({ user_name }, { password: 1 });
+        const result = await getUserList({ user_name: userName }, { password: 1 });
 
         if (result.length === 1) {
             const userPass = result[0].password;
-            const encode = CryptoJsUtils.encode(password).toString();
+            const encode = CryptoJsUtils.encode(passWord).toString();
+
             if (encode === userPass) {
                 const token = jwtUtils.sign(result[0].id);
-                res.accessToken = token;
+                res.token = token;
                 next();
             } else {
                 res.send(failMsgCode.userPasswordError);

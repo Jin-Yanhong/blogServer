@@ -27,7 +27,7 @@ const jwtUtils = {
     verify: function (req, res, next) {
         const jwtSecretKey = publicKey;
 
-        const token = req.headers.accesstoken;
+        const token = req.headers.token;
 
         if (token) {
             try {

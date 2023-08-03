@@ -7,7 +7,7 @@ var routerConfig = (res) => {
     res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS');
     res.header('Content-Type', 'application/json;charset=utf-8');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
-    res.header('Access-Control-Allow-Headers', 'accesstoken');
+    res.header('Access-Control-Allow-Headers', 'token');
 };
 
 /**

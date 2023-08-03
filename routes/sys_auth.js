@@ -19,7 +19,7 @@ Router.post(
     },
     function (req, res) {
         const result = {
-            accessToken: res.accessToken,
+            token: res.token,
         };
         res.send(successMsgCode(result));
     }

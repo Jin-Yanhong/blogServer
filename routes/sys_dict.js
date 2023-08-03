@@ -1,5 +1,6 @@
 const express = require('express');
 const { handleRequest, routerConfig } = require('../utils/httpUtils');
+var { failMsgCode, successMsgCode } = require('../utils/constant');
 const { queryDictById, createDict, getDictList, updateDict, deleteDictById, useDictByKey } = require('../controller/sys_dict.js');
 const auth = require('../middleware/userAuth');
 const Router = express.Router();
@@ -70,9 +71,17 @@ Router.get(
         auth.verifyToken(req, res, next);
     },
     function (req, res) {
-        var { pageSize, pageNum } = req.query;
-        handleRequest(getDictList(pageSize, pageNum), res, {
-            args: { pageSize, pageNum },
+        var { size, page } = req.query;
+        handleRequest(getDictList(size, page), res, {
+            args: { size, page },
+            callback: (data) => {
+                res.send(
+                    successMsgCode({
+                        content: data,
+                        total: data.length,
+                    })
+                );
+            },
         });
     }
 );

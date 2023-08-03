@@ -1,8 +1,6 @@
 const dictModel = require('./model/model_dicts');
 // 获取字典列表
-function getDictList(pageSize, pageNum) {
-    console.log(dictModel);
-
+function getDictList(size, page) {
     return dictModel.find(
         {},
         { __v: 0, value: 0 },
@@ -10,8 +8,8 @@ function getDictList(pageSize, pageNum) {
             sort: {
                 index: 1,
             },
-            limit: pageSize,
-            skip: pageSize * (pageNum - 1),
+            limit: size,
+            skip: size * (page - 1),
         }
     );
 }
