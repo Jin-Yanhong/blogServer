@@ -53,10 +53,7 @@ const downloadFileFromDataBase = async (req, res, next) => {
         temp.push(doc);
     });
 
-    const isExit =
-        temp.find(function (file) {
-            return file.filename === fileName;
-        }) ?? false;
+    const isExit = temp.find((file) => file.filename === fileName) ?? false;
 
     let result = undefined;
 

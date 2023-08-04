@@ -17,11 +17,10 @@ Router.post(
         auth.verifyToken(req, res, next);
     },
     function (req, res) {
-        const { dict } = req.body;
+        const  dict = req.body;
         console.log(dict);
         if (dict) {
             handleRequest(createDict(dict), res, { dict });
-            res.send(failMsgCode.params);
         } else {
             res.send(failMsgCode.params);
         }
@@ -78,13 +77,14 @@ Router.get(
     },
     function (req, res) {
         var { size, page } = req.query;
+
         handleRequest(getDictList(size, page), res, {
             args: { size, page },
             callback: (data) => {
                 res.send(
                     successMsgCode({
                         content: data,
-                        total: data.length,
+                        total:data.length
                     })
                 );
             },
