@@ -23,11 +23,14 @@ const downloadFileFromDisk = (req, res, next) => {
     const fileName = req.params.fileNeme;
     const filePath = path.join(__dirname, `../${LocalfilePath}`);
     fs.stat(`${filePath}\\${fileName}`, function (err, stats) {
+        if (err) {
+            res.send(failMsgCode.fileDoesNotExist);
+            return;
+        }
+
         if (stats) {
             res.result = `${filePath}\\${fileName}`;
             next();
-        } else {
-            res.send(failMsgCode.fileDoesNotExist);
         }
     });
 };

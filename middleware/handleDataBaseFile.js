@@ -54,11 +54,11 @@ const downloadFileFromDataBase = async (req, res, next) => {
     });
 
     const isExit =
-        temp.filter(function (file) {
+        temp.find(function (file) {
             return file.filename === fileName;
-        }).length >= 1;
+        }) ?? false;
 
-    const result = undefined;
+    let result = undefined;
 
     result = isExit ? await bucket.openDownloadStreamByName(fileName).pipe(fs.createWriteStream(`${filePath}\\${fileName}`)) : null;
 

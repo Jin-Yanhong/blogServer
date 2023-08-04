@@ -1,6 +1,6 @@
 const jwtUtils = require('./jwt');
 const { failMsgCode, successMsgCode } = require('../utils/constant');
-const { getUserList } = require('../controller/sys_user.js');
+const { getUserList } = require('../controller/user.js');
 const CryptoJsUtils = require('../utils/crypto');
 
 const auth = {
@@ -31,4 +31,3 @@ const auth = {
 };
 
 module.exports = auth;
-

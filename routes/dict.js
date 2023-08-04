@@ -1,7 +1,7 @@
 const express = require('express');
 const { handleRequest, routerConfig } = require('../utils/httpUtils');
 var { failMsgCode, successMsgCode } = require('../utils/constant');
-const { queryDictById, createDict, getDictList, updateDict, deleteDictById, useDictByKey } = require('../controller/sys_dict.js');
+const { queryDictById, createDict, getDictList, updateDict, deleteDictById, useDictByKey } = require('../controller/dict.js');
 const auth = require('../middleware/userAuth');
 const Router = express.Router();
 
@@ -11,14 +11,20 @@ Router.use(function (req, res, next) {
 });
 
 // 新增字典
-Router.put(
+Router.post(
     '/dict',
     function (req, res, next) {
         auth.verifyToken(req, res, next);
     },
     function (req, res) {
         const { dict } = req.body;
-        handleRequest(createDict(dict), res, { dict });
+        console.log(dict);
+        if (dict) {
+            handleRequest(createDict(dict), res, { dict });
+            res.send(failMsgCode.params);
+        } else {
+            res.send(failMsgCode.params);
+        }
     }
 );
 
@@ -37,7 +43,7 @@ Router.delete(
 );
 
 // 更新字典
-Router.post(
+Router.put(
     '/dict/:id',
     function (req, res, next) {
         auth.verifyToken(req, res, next);
@@ -87,10 +93,9 @@ Router.get(
 );
 
 // 使用字典
-Router.get('/useDict/:key', function (req, res) {
+Router.get('/dict/use/:key', function (req, res) {
     var key = req?.params?.key;
     handleRequest(useDictByKey(key), res, { args: { key } });
 });
 
 module.exports = Router;
-
